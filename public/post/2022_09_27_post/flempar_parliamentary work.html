@@ -1,0 +1,225 @@
+
+
+<p>In this post we delve into the <code>get_work()</code> function and the parameters you can specify to query for more specific information.</p>
+<div id="example-1---basic-functionalities" class="section level3">
+<h3>Example 1 - Basic functionalities</h3>
+<p>First, we will query for all debates on current affairs (one possible type of parliamentary work - and the default option) organized in January-August 2022. We use the <code>get_work()</code> function. Indeed, in contrast to the <code>get_mp</code> function, you <em>always</em> need to specify a date range using the following arguments:</p>
+<ul>
+<li>date_range_from: the start date YYYY-MM-DD</li>
+<li>date_range_to: the end date YYYY-MM-DD</li>
+</ul>
+<pre class="r"><code>work_b &lt;- get_work(date_range_from=&quot;2022-01-01&quot;
+                    , date_range_to=&quot;2022-08-31&quot;)</code></pre>
+<pre class="r"><code>work_b %&gt;%
+  tibble() %&gt;%
+  head(10) %&gt;% View</code></pre>
+<p>As an enormous amount of data can be retrieved through the <code>get_work()</code> function, it is highly <strong>recommended to test your query on a limited date range</strong> before expanding the date range to comprise multiple months to years.</p>
+<p>Note also that we include a chunk of code that lets you inspect the first 10 observations in the data frame created. This allows you to get a feel of the data obtained before diving in deeper. This is how the resulting data frame looks like:</p>
+<p><img src="Markdown%20images/DefaultOutput_get_work.png" /></p>
+<p>Inspecting this data frame, shows you what the default parameters deliver. Namely, the “details” about “debates” in current affairs in “plenary” sessions for the “dates” specified. Though, much more is possible!</p>
+<p>The <code>get_work()</code> function has the following arguments:</p>
+<ul>
+<li>date_range_from: the start date YYYY-MM-DD</li>
+<li>date_range_to: the end date YYYY-MM-DD</li>
+<li>fact: options include “written_questions”, “debates”, “oral_questions_and_interpellations”, “parliamentary_initiatives”, and “council_hearings”</li>
+<li>type: options include “details”, “speech” and “documents”</li>
+<li>plen_comm: choose between plenary “plen” and commission “comm” sessions</li>
+<li>use_parallel: Boolean of which the default value is set to TRUE, select FALSE in case you do not have multiple workers to speed up the calls made</li>
+<li>raw: Boolean of which the default value is set to FALSE, select TRUE in case you wish to retrieve the unprocessed data</li>
+<li>extra_via_fact: Boolean of which the default value is set to FALSE, select TRUE in case you wish to retrieve the unique identifiers of documents outside the date range specified but linked to the “fact”.</li>
+</ul>
+<p>So let’s, for instance, query for some specific type of parliamentary work conducted in 2021. Here, we opt to retrieve data about parliamentary initiatives (<code>fact="parliamentary_initiatives"</code>) discussed in the plenary (<code>plen_comm="plen"</code>) sessions (<code>date_range_from="2021-01-01"</code>and <code>date_range_to="2021-12-31"</code>). We also specify that we are interested in the <code>type="details"</code> as this will deliver us a data frame containing the essentials about each parliamentary initiative.</p>
+<pre class="r"><code>pi_work &lt;- get_work(date_range_from=&quot;2021-01-01&quot;
+                    , date_range_to=&quot;2021-12-31&quot;
+                    , fact=&quot;parliamentary_initiatives&quot;
+                    , type=&quot;details&quot;
+                    , plen_comm=&quot;plen&quot;)</code></pre>
+<pre class="r"><code>pi_work %&gt;%
+  tibble() %&gt;%
+  head(10) %&gt;% View</code></pre>
+<p>Now we can inspect the data a bit more. Something you can check, for example, is which topics are covered in the parliamentary initiatives at that time. We use some <code>dplyr</code> code, in this case <code>count()</code> to quickly count the unique values in the column <code>result_thema_1</code>.</p>
+<pre class="r"><code>pi_work %&gt;% count(result_thema_1, sort = T) -&gt; work_topics
+work_topics</code></pre>
+</div>
+<div id="example-2---retrieving-documents-related-to-parliamentary-work" class="section level3">
+<h3>Example 2 - Retrieving <em>documents</em> related to parliamentary work</h3>
+<p>Here, we opt to retrieve data about written questions (<code>fact="written questions"</code>) issued in March 2022 (<code>date_range_from="2022-03-01"</code>and <code>date_range_to="2022-03-31"</code>). Importantly, we specify that we are interested in <code>type="document"</code> as this will deliver us a data frame containing the documents related to each written question in the selection.</p>
+<pre class="r"><code>wq_work_doc &lt;- get_work(date_range_from=&quot;2022-03-01&quot;
+                    , date_range_to=&quot;2022-03-31&quot;
+                    , fact=&quot;written_questions&quot;
+                    , type=&quot;document&quot;)  </code></pre>
+<pre class="r"><code>wq_work_doc %&gt;%
+  tibble::tibble() %&gt;%
+  head(10) %&gt;% View</code></pre>
+<p>This call delivers you a data frame with (at least) the following columns:</p>
+<ul>
+<li>id_fact: unique identifier linking to the specific parliamentary activity the document is associated with (in this example, the written question)</li>
+<li>text: each row in this column contains the text contained in the document</li>
+</ul>
+<p>The data frame can be manipulated further to make it ready for text analysis. First, matching the data frame with the <code>details</code> of its associated written questions is possible via <code>id_fact</code>.</p>
+<pre class="r"><code>wq_work &lt;- get_work(date_range_from=&quot;2022-03-01&quot;
+                    , date_range_to=&quot;2022-03-31&quot;
+                    , fact=&quot;written_questions&quot;
+                    , type=&quot;details&quot;)  </code></pre>
+<pre class="r"><code>wq_docs_details &lt;- left_join(wq_work, wq_work_doc, by=c(&quot;id_fact&quot;)) </code></pre>
+<p>Another element here is that we can <strong>search</strong> these documents for <strong>specific key words</strong> occurring in one of them. For this, we use the <code>search_terms()</code> function with the following arguments:</p>
+<ul>
+<li>text_field: fill in the column name of the text field in c(“XXX”), multiple columns can be specified at once as c(“XXX”, “XXX”, …)</li>
+<li>search_terms: fill in the term(s) you want the documents checked for</li>
+</ul>
+<p>Here, we opt to retrieve data about the PFOS/PFAS debate in Belgium (<code>search_terms = c("PFOS", "PFAS")</code>).</p>
+<pre class="r"><code>wq_docs_details %&gt;%
+  as_tibble() %&gt;%
+  search_terms(text_field = c(&quot;text&quot;), search_terms = c(&quot;PFOS&quot;, &quot;PFAS&quot;)) -&gt; PFOS</code></pre>
+<p>Note that to get a good feel of the data, it is often recommended to sort the data frame by <code>id_fact</code> (e.g. when retrieving documents about <code>fact="parliamentary_initiatives</code>, multiple documents are associated to one initiative). This thus gives you a clearer overview of all documents related to one unique ‘activity’.</p>
+</div>
+<div id="example-3---retrieving-speech-related-to-parliamentary-work" class="section level3">
+<h3>Example 3 - Retrieving <em>speech</em> related to parliamentary work</h3>
+<p>For this example, we opt to retrieve data about oral questions and interpellations (<code>fact="oral_questions_and_interpellations"</code>) discussed in the committee meetings (<code>plen_comm="comm"</code>) of March 2022 (<code>date_range_from="2022-03-01"</code>and <code>date_range_to="2022-03-31"</code>). Next, we specify that we are interested in the <code>type="speech"</code> as this will deliver us a data frame containing the ‘speech’ or spoken word by MPs and ministers related to each oral question in the selection.</p>
+<pre class="r"><code>oq_speech &lt;- get_work(date_range_from=&quot;2022-03-01&quot;
+                    , date_range_to=&quot;2022-03-31&quot;
+                    , fact=&quot;oral_questions_and_interpellations&quot;
+                    , type=&quot;speech&quot;
+                    , plen_comm=&quot;comm&quot;) </code></pre>
+<p>This call delivers you a data frame with the following columns:
+* journaallijn_id: the unique identifier for each action-reaction sequence related to the same oral question.
+* text: each row in this column contains the ‘speech’ per individual speaker.
+* sprekertitel: identifies who is speaking.
+* persoon_id: the unique identifier for each individual.</p>
+<p>Matching this data frame with the <code>details</code> of these oral questions is possible via the <code>journaallijn_id</code>. Here, we show you how to extract the <code>journaallijn_id</code> from the <code>details</code> data frame through <em>unnesting</em> the column <code>result_procedureverloop</code> and then the column <code>journaallijn</code>.</p>
+<pre class="r"><code>oq_details &lt;- get_work(date_range_from=&quot;2022-03-01&quot;
+                    , date_range_to=&quot;2022-03-31&quot;
+                    , fact=&quot;oral_questions_and_interpellations&quot;
+                    , type=&quot;details&quot;
+                    , plen_comm=&quot;comm&quot;
+                    , use_parallel=TRUE) </code></pre>
+<pre class="r"><code>oq_details %&gt;% 
+  unnest(result_procedureverloop) %&gt;% 
+  unnest_wider(journaallijn, names_sep = &quot;_&quot;) -&gt; oq_details_jln</code></pre>
+<p>Upon inspection of this data frame, you will notice that the <code>journaallijn_id</code> is not automatically filled in across all rows. To end up again with non-repeated observations (i.e. unique rows), we filter out those rows <strong>not</strong> containing the <code>journaallijn_id</code>.</p>
+<pre class="r"><code>oq_details_jln %&gt;%
+  filter(!is.na(journaallijn_id)) -&gt; oral_questions</code></pre>
+<p>Now we are ready to join the <code>oral_questions</code>data frame with the <code>mp_oq_speech</code> data frame containing the ‘speech’ per oral question.</p>
+<pre class="r"><code>oq_speech %&gt;% 
+  mutate(journaallijn_id = as.numeric(journaallijn_id)) -&gt; oq_speech
+
+questions_speech &lt;- left_join(oral_questions, oq_speech, by=c(&quot;journaallijn_id&quot;)) </code></pre>
+<p>Finally, we can also <strong>search</strong> these spoken words for <strong>specific key words</strong> occurring. We again use the <code>search_terms()</code> function. We opt to retrieve data about the PFOS/PFAS debate in Belgium (<code>search_terms = c("PFOS", "PFAS")</code>).</p>
+<pre class="r"><code>questions_speech %&gt;%
+  as_tibble() %&gt;%
+  search_terms(text_field = c(&quot;text&quot;), search_terms = c(&quot;PFOS&quot;, &quot;PFAS&quot;)) -&gt; PFAS_oq</code></pre>
+</div>
+<div id="example-4---advanced-extra-unnesting-of-lists" class="section level3">
+<h3>Example 4 - ADVANCED: Extra unnesting of lists</h3>
+<p>Though, as you may have noticed from your first inspection of the data frame, the <code>get_work()</code> function from the get-go confronts you with a couple of <em>nested</em> columns. We will go over several examples to dig up relevant information from these <em>lists in lists</em>. Keep in mind that it is recommended to go step-by-step when going deeper into the lists as it is far too easy to end up with a giant unfitting data frame when combining multiple ‘unnestings’ at once without knowing the exact content of the data stored within the lists.</p>
+<p><strong>1. Topics by type of activity: unnesting of the column <code>result_objecttype</code></strong></p>
+<p>Here, we use the <code>pi_work</code> data frame that we created in the first example of this post to demonstrate how to ‘unnest’ columns.</p>
+<pre class="r"><code>pi_work %&gt;%
+  select(id_fact, result_objecttype, result_thema_1) %&gt;%
+  unnest_wider(result_objecttype) %&gt;%
+  select(id_fact, naam, result_thema_1) -&gt; work_type_topics
+work_type_topics</code></pre>
+<p>Now we can make a count of the observations by relevant types of activity or visualize the results.</p>
+<pre class="r"><code>work_type_topics %&gt;%
+  filter(naam == &quot;Ontwerp van decreet&quot; 
+         | naam == &quot;Voorstel van decreet&quot; 
+         | naam == &quot;Voorstel van resolutie&quot;) -&gt; work_type_topics
+work_type_topics</code></pre>
+<pre class="r"><code>work_type_topics %&gt;% 
+  group_by(naam) %&gt;%
+  count(result_thema_1, sort = T) -&gt; work_type_topics_c
+work_type_topics_c</code></pre>
+<pre class="r"><code>plot5 &lt;- ggplot(work_type_topics_c, aes(x = reorder(result_thema_1, -n), y = n, fill= naam, colour = naam)) + 
+  geom_bar(stat = &quot;identity&quot;) +
+  labs(x=&quot;&quot;, y = &quot;Count&quot;) + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust=.5, hjust=1)) +
+  theme(legend.title = element_blank())
+plot5</code></pre>
+<p><img src="Markdown%20images/plot5.png" /></p>
+<p><strong>2. Topics by type of activity and party: unnesting of the column <code>result_objecttype</code> &amp; <code>result_contacttype</code></strong></p>
+<p>Let’s delve even deeper into these <em>lists in lists</em> by building on our knowledge of the <code>pi_work</code> data frame. Here we will unnest columns to assess which MPs from which parties are most active in proposing new legislation and tabling resolutions.</p>
+<pre class="r"><code>pi_work %&gt;%
+  select(id_fact, result_objecttype, result_contacttype) %&gt;%
+  unnest_wider(result_objecttype, names_sep = &quot;_&quot;) %&gt;%
+  unnest(result_contacttype, names_sep = &quot;_&quot;) %&gt;%
+  unnest(result_contacttype_contact, names_sep = &quot;_&quot;) %&gt;%
+  unnest(result_contacttype_contact_fractie, names_sep = &quot;_&quot;) -&gt; pi_type_party
+pi_type_party</code></pre>
+<p>Now we can make a count of the observations by relevant types of activity and party or visualize the results. First, we filter out legislative proposals made by MPs (‘Voorstel van decreet’) and resolutions (‘Voorstel van resolutie’).</p>
+<pre class="r"><code>pi_type_party %&gt;%
+  filter(result_objecttype_naam == &quot;Voorstel van decreet&quot; 
+         | result_objecttype_naam == &quot;Voorstel van resolutie&quot;) -&gt; pi_type_party_c</code></pre>
+<p>Next, we group our data by party to arrive at a count. Alternatively, we can plot the results.</p>
+<pre class="r"><code>pi_type_party_c %&gt;% 
+  group_by(result_contacttype_contact_fractie_naam) %&gt;%
+  count(result_objecttype_naam, sort = T) -&gt; pi_type_party_cc</code></pre>
+<pre class="r"><code>plot6 &lt;- ggplot(pi_type_party_cc, aes(x = reorder(result_contacttype_contact_fractie_naam, -n), y = n, fill = result_objecttype_naam, colour = result_objecttype_naam)) + 
+  geom_bar(stat =&quot;identity&quot;) +
+  labs(x=&quot;&quot;, y = &quot;Count&quot;) + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust=.5, hjust=1)) +
+  theme(legend.title = element_blank())
+plot6  </code></pre>
+<p><img src="Markdown%20images/plot6.png" /></p>
+<p><strong>3. Voting records: Unnesting of the column <code>result_journaallijn-stemmingen</code></strong></p>
+<pre class="r"><code>pi_work %&gt;%
+  select(id_fact, &#39;result_journaallijn-stemmingen&#39;, result_objecttype) %&gt;%
+  unnest_wider(result_objecttype, names_sep = &quot;_&quot;) %&gt;%
+  unnest_wider(&#39;result_journaallijn-stemmingen&#39;) %&gt;%
+  unnest_longer(stemming) %&gt;%
+  unnest_wider(stemming) -&gt; votes</code></pre>
+<p>One potential observation we can make is whether the MPs of opposition parties vote against ‘ontwerp van decreet’ (i.e. those legislative proposals stemming from the Flemish government) and whether the MPs of the governing parties systematically vote in favor?
+Even more unnesting is needed for this, specifically of the columns <code>stemming-tegen</code>, <code>stemming-voor</code> and <code>fractie</code>. We start we the votes <em>against</em>.</p>
+<pre class="r"><code>votes %&gt;%
+  unnest(&#39;stemming-tegen&#39;, names_sep = &quot;_&quot;) %&gt;%
+  unnest_wider(&#39;stemming-tegen&#39;, names_sep = &quot;_&quot;) %&gt;%
+  unnest_longer(&#39;stemming-tegen_persoon&#39;) %&gt;%
+  unnest_wider(&#39;stemming-tegen_persoon&#39;)  %&gt;%
+  unnest(fractie, names_sep = &quot;_&quot;) -&gt; votes_against</code></pre>
+<p>We can then assess the average percentage of MPs per party voting <em>against</em> legislative proposals initiated by the government.</p>
+<pre class="r"><code>votes_against %&gt;%
+  select(id_fact, fractie_naam, `fractie_zetel-aantal`, result_objecttype_naam) %&gt;%
+  group_by(id_fact) %&gt;%
+  filter(result_objecttype_naam == &quot;Ontwerp van decreet&quot;) %&gt;% 
+  add_count(fractie_naam) %&gt;% 
+  rename(&quot;votes_against&quot; = &quot;n&quot;) -&gt; votes_against2</code></pre>
+<pre class="r"><code>votes_against2 &lt;- unique(votes_against2) 
+votes_against2 &lt;- na.omit(votes_against2) </code></pre>
+<p>Same procedure for the votes <em>in favor</em>. First, unnesting the relevant columns.</p>
+<pre class="r"><code>votes %&gt;%
+  unnest(&#39;stemming-voor&#39;, names_sep = &quot;_&quot;) %&gt;%
+  unnest_wider(&#39;stemming-voor&#39;, names_sep = &quot;_&quot;) %&gt;%
+  unnest_longer(&#39;stemming-voor_persoon&#39;) %&gt;%
+  unnest_wider(&#39;stemming-voor_persoon&#39;)  %&gt;%
+  unnest(fractie, names_sep = &quot;_&quot;) -&gt; votes_infavor</code></pre>
+<p>We can then assess the average percentage of MPs per party voting <em>in favor of</em> legislative proposals initiated by the government.</p>
+<pre class="r"><code>votes_infavor %&gt;%
+  select(id_fact, fractie_naam, `fractie_zetel-aantal`, result_objecttype_naam) %&gt;%
+  group_by(id_fact) %&gt;%
+  filter(result_objecttype_naam == &quot;Ontwerp van decreet&quot;) %&gt;% 
+  add_count(fractie_naam) %&gt;% 
+  rename(&quot;votes_favor&quot; = &quot;n&quot;) -&gt; votes_infavor2</code></pre>
+<pre class="r"><code>votes_infavor2 &lt;- unique(votes_infavor2) 
+votes_infavor2 &lt;- na.omit(votes_infavor2) </code></pre>
+<p>Next, we join the data frames to assess the voting patterns of governing and oppositions parties regarding the legislative proposals initiated by government.</p>
+<pre class="r"><code>votes_records &lt;- full_join(votes_against2, votes_infavor2, by=c(&quot;id_fact&quot; = &quot;id_fact&quot;, &quot;fractie_naam&quot; = &quot;fractie_naam&quot;, &quot;fractie_zetel-aantal&quot; = &quot;fractie_zetel-aantal&quot;, &quot;result_objecttype_naam&quot; = &quot;result_objecttype_naam&quot;)) 
+
+votes_records %&gt;% 
+  mutate(votes_favor = replace_na(votes_favor, 0)) %&gt;% 
+  mutate(votes_against = replace_na(votes_against, 0)) -&gt; votes_records2</code></pre>
+<p>Do the opposition parties mostly vote against and governing parties in favor?</p>
+<pre class="r"><code>votes_records2 %&gt;%
+  group_by(fractie_naam) %&gt;%
+  mutate(prop_against = votes_against/`fractie_zetel-aantal`) %&gt;%
+  summarise(m = mean(prop_against)) %&gt;%
+  rename(&quot;average prop. against&quot; = &quot;m&quot;, &quot;party&quot; = &quot;fractie_naam&quot; ) -&gt; votes_records_against</code></pre>
+<pre class="r"><code>votes_records2 %&gt;%
+  group_by(fractie_naam)  %&gt;%
+  mutate(prop_favor = votes_favor/`fractie_zetel-aantal`) %&gt;%
+  summarise(m = mean(prop_favor)) %&gt;%
+  rename(&quot;average prop. favor&quot; = &quot;m&quot;, &quot;party&quot; = &quot;fractie_naam&quot; ) -&gt; votes_records_infavor</code></pre>
+<p><span class="math inline">\(~~~~~~~~~~~\)</span>
+<span class="math inline">\(~~~~~~~~~~~\)</span>
+<span class="math inline">\(~~~~~~~~~~~\)</span></p>
+</div>

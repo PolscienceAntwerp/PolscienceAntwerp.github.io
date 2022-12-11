@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts | FLEMPAR</title>
+    <link>/post/</link>
+      <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <description>Posts</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Mon, 26 Sep 2022 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/icon_hueefb29eb453fbc316b7c58d7055b5de9_54549_512x512_fill_lanczos_center_3.png</url>
+      <title>Posts</title>
+      <link>/post/</link>
+    </image>
+    
+    <item>
+      <title>Flempar the extra&#39;s</title>
+      <link>/post/2022_09_28_post/</link>
+      <pubDate>Mon, 26 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>/post/2022_09_28_post/</guid>
+      <description>&lt;h2 id=&#34;writing-your-data-to-a-csv-file&#34;&gt;Writing your data to a CSV file&lt;/h2&gt;
+&lt;p&gt;In many cases, it might be useful to write the resulting data frame (here named &lt;code&gt;result&lt;/code&gt;, but can be any name of your choosing) to a CSV file. Here&amp;rsquo;s the code to do so, making use of the &lt;code&gt;write.csv2()&lt;/code&gt; function. Note that we included a line on how to drop columns containing data in &lt;em&gt;list&lt;/em&gt; format, a format a CSV file cannot handle. Careful inspection of your data and its formats is therefore always necessary!&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;result %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     select_if(Negate(is.list)) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     write.csv2(&amp;#34;result.csv&amp;#34;, row.names=FALSE)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The CSV file can now be found in your local folder.&lt;/p&gt;
+&lt;h2 id=&#34;applying-regexp-to-detect-patterns-in-text&#34;&gt;Applying &lt;em&gt;regexp&lt;/em&gt; to detect patterns in text&lt;/h2&gt;
+&lt;p&gt;Given the large bulks of text that can be gathered through the &lt;code&gt;get_work()&lt;/code&gt; function, it might come in handy to structure this text a bit and apply &lt;em&gt;regexp&lt;/em&gt; to detect patterns in the text, for instance, split up some text in multiple columns.&lt;/p&gt;
+&lt;p&gt;To illustrate this, we first query for a set of written questions (via &lt;code&gt;get_work()&lt;/code&gt;, specifying &lt;code&gt;fact=&amp;quot;written_questions&amp;quot;&lt;/code&gt; and &lt;code&gt;type=&amp;quot;document&amp;quot;&lt;/code&gt;). These questions have a distinct structure: they are composed of a &amp;lsquo;question&amp;rsquo; by an MP and an &amp;lsquo;answer&amp;rsquo; by a minister. So let&amp;rsquo;s ensure that &amp;lsquo;question&amp;rsquo; and &amp;lsquo;answer&amp;rsquo; are stored in separate columns instead of being one big bulk of text. To do so, we use &lt;code&gt;mutate&lt;/code&gt; from &lt;code&gt;dplyr&lt;/code&gt; to create the extra columns and we extract the &lt;em&gt;strings&lt;/em&gt; via &lt;code&gt;str_extract&lt;/code&gt; from &lt;code&gt;stringr&lt;/code&gt; (more info &lt;a href=&#34;https://stringr.tidyverse.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;here&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Note that this procedure entirely relies on identifying the &lt;em&gt;string&lt;/em&gt; or sequence of words that marks the distinctive parts of a text. In our case, we identify &amp;lsquo;ANTWOORD op vraag&amp;rsquo; (or: &lt;em&gt;ANSWER to question&lt;/em&gt;) as introducing the distinction between the &amp;lsquo;question&amp;rsquo; and &amp;lsquo;answer&amp;rsquo; parts of the written question.&lt;/p&gt;
+&lt;p&gt;Finally, note that we use &lt;em&gt;regexp&lt;/em&gt;. You can look up all possibilities &lt;a href=&#34;https://stringr.tidyverse.org/articles/regular-expressions.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;written_questions &amp;lt;- get_work(date_range_from=&amp;#34;2022-02-15&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                       , date_range_to=&amp;#34;2022-02-20&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                       , fact=&amp;#34;written_questions&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                       , type=&amp;#34;document&amp;#34;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;written_questions %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      mutate(vraag= str_extract(text, &amp;#34;.*(?&amp;lt;=ANTWOORD op )&amp;#34;)) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      mutate(antwoord= str_extract(text, &amp;#34;(?&amp;lt;=ANTWOORD op ).*&amp;#34;) ) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      write.csv2(&amp;#34;written_questions.csv&amp;#34;,row.names = FALSE)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>flempar_parliamentary work</title>
+      <link>/post/2022_09_27_post/</link>
+      <pubDate>Sun, 25 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>/post/2022_09_27_post/</guid>
+      <description>&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;knitr::opts_chunk$set(echo = TRUE)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In this post we delve into the &lt;code&gt;get_work()&lt;/code&gt; function and the  parameters you can specify to query for more specific information.&lt;/p&gt;
+&lt;h3 id=&#34;example-1---basic-functionalities&#34;&gt;Example 1 - Basic functionalities&lt;/h3&gt;
+&lt;p&gt;First, we will query for all debates on current affairs (one possible type of parliamentary work - and the default option) organized in January-August 2022. We use the &lt;code&gt;get_work()&lt;/code&gt; function. Indeed, in contrast to the &lt;code&gt;get_mp&lt;/code&gt; function, you &lt;em&gt;always&lt;/em&gt; need to specify a date range using the following arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;date_range_from: the start date YYYY-MM-DD&lt;/li&gt;
+&lt;li&gt;date_range_to: the end date YYYY-MM-DD&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;work_b &amp;lt;- get_work(date_range_from=&amp;#34;2022-01-01&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , date_range_to=&amp;#34;2022-08-31&amp;#34;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;work_b %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  tibble() %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  head(10) %&amp;gt;% View
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As an enormous amount of data can be retrieved through the &lt;code&gt;get_work()&lt;/code&gt; function, it is highly &lt;strong&gt;recommended to test your query on a limited date range&lt;/strong&gt; before expanding the date range to comprise multiple months to years.&lt;/p&gt;
+&lt;p&gt;Note also that we include a chunk of code that lets you inspect the first 10 observations in the data frame created. This allows you to get a feel of the data obtained before diving in deeper. This is how the resulting data frame looks like:&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;/DefaultOutput_get_work.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;Inspecting this data frame, shows you what the default parameters deliver. Namely, the &amp;ldquo;details&amp;rdquo; about &amp;ldquo;debates&amp;rdquo; in current affairs in &amp;ldquo;plenary&amp;rdquo; sessions for the &amp;ldquo;dates&amp;rdquo; specified. Though, much more is possible!&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;get_work()&lt;/code&gt; function has the following arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;date_range_from: the start date YYYY-MM-DD&lt;/li&gt;
+&lt;li&gt;date_range_to: the end date YYYY-MM-DD&lt;/li&gt;
+&lt;li&gt;fact: options include &amp;ldquo;written_questions&amp;rdquo;, &amp;ldquo;debates&amp;rdquo;, &amp;ldquo;oral_questions_and_interpellations&amp;rdquo;, &amp;ldquo;parliamentary_initiatives&amp;rdquo;, and &amp;ldquo;council_hearings&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;type: options include &amp;ldquo;details&amp;rdquo;, &amp;ldquo;speech&amp;rdquo; and &amp;ldquo;documents&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;plen_comm: choose between plenary &amp;ldquo;plen&amp;rdquo; and commission &amp;ldquo;comm&amp;rdquo; sessions&lt;/li&gt;
+&lt;li&gt;use_parallel: Boolean of which the default value is set to TRUE, select FALSE in case you do not have multiple workers to speed up the calls made&lt;/li&gt;
+&lt;li&gt;raw: Boolean of which the default value is set to FALSE, select TRUE in case you wish to retrieve the unprocessed data&lt;/li&gt;
+&lt;li&gt;extra_via_fact: Boolean of which the default value is set to FALSE, select TRUE in case you wish to retrieve the unique identifiers of documents outside the date range specified but linked to the &amp;ldquo;fact&amp;rdquo;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So let&amp;rsquo;s, for instance, query for some specific type of parliamentary work conducted in 2021. Here, we opt to retrieve data about parliamentary initiatives (&lt;code&gt;fact=&amp;quot;parliamentary_initiatives&amp;quot;&lt;/code&gt;) discussed in the plenary (&lt;code&gt;plen_comm=&amp;quot;plen&amp;quot;&lt;/code&gt;) sessions (&lt;code&gt;date_range_from=&amp;quot;2021-01-01&amp;quot;&lt;/code&gt;and &lt;code&gt;date_range_to=&amp;quot;2021-12-31&amp;quot;&lt;/code&gt;). We also specify that we are interested in the &lt;code&gt;type=&amp;quot;details&amp;quot;&lt;/code&gt; as this will deliver us a data frame containing the essentials about each parliamentary initiative.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pi_work &amp;lt;- get_work(date_range_from=&amp;#34;2021-01-01&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , date_range_to=&amp;#34;2021-12-31&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , fact=&amp;#34;parliamentary_initiatives&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , type=&amp;#34;details&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , plen_comm=&amp;#34;plen&amp;#34;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pi_work %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  tibble() %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  head(10) %&amp;gt;% View
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now we can inspect the data a bit more. Something you can check, for example, is which topics are covered in the parliamentary initiatives at that time. We use some &lt;code&gt;dplyr&lt;/code&gt; code, in this case &lt;code&gt;count()&lt;/code&gt; to quickly count the unique values in the column &lt;code&gt;result_thema_1&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pi_work %&amp;gt;% count(result_thema_1, sort = T) -&amp;gt; work_topics
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;work_topics
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;example-2---retrieving-documents-related-to-parliamentary-work&#34;&gt;Example 2 - Retrieving &lt;em&gt;documents&lt;/em&gt; related to parliamentary work&lt;/h3&gt;
+&lt;p&gt;Here, we opt to retrieve data about written questions (&lt;code&gt;fact=&amp;quot;written questions&amp;quot;&lt;/code&gt;) issued in March 2022 (&lt;code&gt;date_range_from=&amp;quot;2022-03-01&amp;quot;&lt;/code&gt;and &lt;code&gt;date_range_to=&amp;quot;2022-03-31&amp;quot;&lt;/code&gt;). Importantly, we specify that we are interested in &lt;code&gt;type=&amp;quot;document&amp;quot;&lt;/code&gt; as this will deliver us a data frame containing the documents related to each written question in the selection.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wq_work_doc &amp;lt;- get_work(date_range_from=&amp;#34;2022-03-01&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , date_range_to=&amp;#34;2022-03-31&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , fact=&amp;#34;written_questions&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , type=&amp;#34;document&amp;#34;)  
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wq_work_doc %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  tibble::tibble() %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  head(10) %&amp;gt;% View
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This call delivers you a data frame with (at least) the following columns:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;id_fact: unique identifier linking to the specific parliamentary activity the document is associated with (in this example, the written question)&lt;/li&gt;
+&lt;li&gt;text: each row in this column contains the text contained in the document&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The data frame can be manipulated further to make it ready for text analysis. First, matching the data frame with the &lt;code&gt;details&lt;/code&gt; of its associated written questions is possible via &lt;code&gt;id_fact&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wq_work &amp;lt;- get_work(date_range_from=&amp;#34;2022-03-01&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , date_range_to=&amp;#34;2022-03-31&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , fact=&amp;#34;written_questions&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , type=&amp;#34;details&amp;#34;)  
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wq_docs_details &amp;lt;- left_join(wq_work, wq_work_doc, by=c(&amp;#34;id_fact&amp;#34;)) 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Another element here is that we can &lt;strong&gt;search&lt;/strong&gt; these documents for &lt;strong&gt;specific key words&lt;/strong&gt; occurring in one of them. For this, we use the &lt;code&gt;search_terms()&lt;/code&gt; function with the following arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;text_field: fill in the column name of the text field in c(&amp;ldquo;XXX&amp;rdquo;), multiple columns can be specified at once as c(&amp;ldquo;XXX&amp;rdquo;, &amp;ldquo;XXX&amp;rdquo;, &amp;hellip;)&lt;/li&gt;
+&lt;li&gt;search_terms: fill in the term(s) you want the documents checked for&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Here, we opt to retrieve data about the PFOS/PFAS debate in Belgium (&lt;code&gt;search_terms = c(&amp;quot;PFOS&amp;quot;, &amp;quot;PFAS&amp;quot;)&lt;/code&gt;).&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wq_docs_details %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  as_tibble() %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  search_terms(text_field = c(&amp;#34;text&amp;#34;), search_terms = c(&amp;#34;PFOS&amp;#34;, &amp;#34;PFAS&amp;#34;)) -&amp;gt; PFOS
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Note that to get a good feel of the data, it is often recommended to sort the data frame by &lt;code&gt;id_fact&lt;/code&gt; (e.g. when retrieving documents about &lt;code&gt;fact=&amp;quot;parliamentary_initiatives&lt;/code&gt;, multiple documents are associated to one initiative). This thus gives you a clearer overview of all documents related to one unique &amp;lsquo;activity&amp;rsquo;.&lt;/p&gt;
+&lt;h3 id=&#34;example-3---retrieving-speech-related-to-parliamentary-work&#34;&gt;Example 3 - Retrieving &lt;em&gt;speech&lt;/em&gt; related to parliamentary work&lt;/h3&gt;
+&lt;p&gt;For this example, we opt to retrieve data about oral questions and interpellations (&lt;code&gt;fact=&amp;quot;oral_questions_and_interpellations&amp;quot;&lt;/code&gt;) discussed in the committee meetings (&lt;code&gt;plen_comm=&amp;quot;comm&amp;quot;&lt;/code&gt;) of March 2022 (&lt;code&gt;date_range_from=&amp;quot;2022-03-01&amp;quot;&lt;/code&gt;and &lt;code&gt;date_range_to=&amp;quot;2022-03-31&amp;quot;&lt;/code&gt;). Next, we specify that we are interested in the &lt;code&gt;type=&amp;quot;speech&amp;quot;&lt;/code&gt; as this will deliver us a data frame containing the &amp;lsquo;speech&amp;rsquo; or spoken word by MPs and ministers related to each oral question in the selection.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;oq_speech &amp;lt;- get_work(date_range_from=&amp;#34;2022-03-01&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , date_range_to=&amp;#34;2022-03-31&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , fact=&amp;#34;oral_questions_and_interpellations&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , type=&amp;#34;speech&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , plen_comm=&amp;#34;comm&amp;#34;) 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This call delivers you a data frame with the following columns:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;journaallijn_id: the unique identifier for each action-reaction sequence related to the same oral question.&lt;/li&gt;
+&lt;li&gt;text: each row in this column contains the &amp;lsquo;speech&amp;rsquo; per individual speaker.&lt;/li&gt;
+&lt;li&gt;sprekertitel: identifies who is speaking.&lt;/li&gt;
+&lt;li&gt;persoon_id: the unique identifier for each individual.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Matching this data frame with the &lt;code&gt;details&lt;/code&gt; of these oral questions is possible via the &lt;code&gt;journaallijn_id&lt;/code&gt;. Here, we show you how to extract the &lt;code&gt;journaallijn_id&lt;/code&gt; from the &lt;code&gt;details&lt;/code&gt; data frame through &lt;em&gt;unnesting&lt;/em&gt; the column &lt;code&gt;result_procedureverloop&lt;/code&gt; and then the column &lt;code&gt;journaallijn&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;oq_details &amp;lt;- get_work(date_range_from=&amp;#34;2022-03-01&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , date_range_to=&amp;#34;2022-03-31&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , fact=&amp;#34;oral_questions_and_interpellations&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , type=&amp;#34;details&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , plen_comm=&amp;#34;comm&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    , use_parallel=TRUE) 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;oq_details %&amp;gt;% 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest(result_procedureverloop) %&amp;gt;% 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest_wider(journaallijn, names_sep = &amp;#34;_&amp;#34;) -&amp;gt; oq_details_jln
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Upon inspection of this data frame, you will notice that the &lt;code&gt;journaallijn_id&lt;/code&gt; is not automatically filled in across all rows. To end up again with  non-repeated observations (i.e. unique rows), we filter out those rows &lt;strong&gt;not&lt;/strong&gt; containing the &lt;code&gt;journaallijn_id&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;oq_details_jln %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  filter(!is.na(journaallijn_id)) -&amp;gt; oral_questions
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now we are ready to join the &lt;code&gt;oral_questions&lt;/code&gt;data frame with the &lt;code&gt;mp_oq_speech&lt;/code&gt; data frame containing the &amp;lsquo;speech&amp;rsquo; per oral question.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;oq_speech %&amp;gt;% 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  mutate(journaallijn_id = as.numeric(journaallijn_id)) -&amp;gt; oq_speech
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;questions_speech &amp;lt;- left_join(oral_questions, oq_speech, by=c(&amp;#34;journaallijn_id&amp;#34;)) 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Finally, we can also &lt;strong&gt;search&lt;/strong&gt; these spoken words for &lt;strong&gt;specific key words&lt;/strong&gt; occurring. We again use the &lt;code&gt;search_terms()&lt;/code&gt; function. We opt to retrieve data about the PFOS/PFAS debate in Belgium (&lt;code&gt;search_terms = c(&amp;quot;PFOS&amp;quot;, &amp;quot;PFAS&amp;quot;)&lt;/code&gt;).&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;questions_speech %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  as_tibble() %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  search_terms(text_field = c(&amp;#34;text&amp;#34;), search_terms = c(&amp;#34;PFOS&amp;#34;, &amp;#34;PFAS&amp;#34;)) -&amp;gt; PFAS_oq
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;example-4---advanced-extra-unnesting-of-lists&#34;&gt;Example 4 - ADVANCED: Extra unnesting of lists&lt;/h3&gt;
+&lt;p&gt;Though, as you may have noticed from your first inspection of the data frame, the &lt;code&gt;get_work()&lt;/code&gt; function from the get-go confronts you with a couple of &lt;em&gt;nested&lt;/em&gt; columns. We will go over several examples to dig up relevant information from these &lt;em&gt;lists in lists&lt;/em&gt;. Keep in mind that it is recommended to go step-by-step when going deeper into the lists as it is far too easy to end up with a giant unfitting data frame when combining multiple &amp;lsquo;unnestings&amp;rsquo; at once without knowing the exact content of the data stored within the lists.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1. Topics by type of activity: unnesting of the column &lt;code&gt;result_objecttype&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Here, we use the &lt;code&gt;pi_work&lt;/code&gt; data frame that we created in the first example of this post to demonstrate how to &amp;lsquo;unnest&amp;rsquo; columns.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pi_work %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  select(id_fact, result_objecttype, result_thema_1) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest_wider(result_objecttype) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  select(id_fact, naam, result_thema_1) -&amp;gt; work_type_topics
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;work_type_topics
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now we can make a count of the observations by relevant types of activity or visualize the results.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;work_type_topics %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  filter(naam == &amp;#34;Ontwerp van decreet&amp;#34; 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;         | naam == &amp;#34;Voorstel van decreet&amp;#34; 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;         | naam == &amp;#34;Voorstel van resolutie&amp;#34;) -&amp;gt; work_type_topics
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;work_type_topics
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;work_type_topics %&amp;gt;% 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  group_by(naam) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  count(result_thema_1, sort = T) -&amp;gt; work_type_topics_c
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;work_type_topics_c
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;plot5 &amp;lt;- ggplot(work_type_topics_c, aes(x = reorder(result_thema_1, -n), y = n, fill= naam, colour = naam)) + 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  geom_bar(stat = &amp;#34;identity&amp;#34;) +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  labs(x=&amp;#34;&amp;#34;, y = &amp;#34;Count&amp;#34;) + 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  theme_classic() +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  theme(axis.text.x = element_text(angle = 90, vjust=.5, hjust=1)) +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  theme(legend.title = element_blank())
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;plot5
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;/plot5.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. Topics by type of activity and party: unnesting of the column &lt;code&gt;result_objecttype&lt;/code&gt; &amp;amp; &lt;code&gt;result_contacttype&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s delve even deeper into these &lt;em&gt;lists in lists&lt;/em&gt; by building on our knowledge of the &lt;code&gt;pi_work&lt;/code&gt; data frame. Here we will unnest columns to assess which MPs from which parties are most active in proposing new legislation and tabling resolutions.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pi_work %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  select(id_fact, result_objecttype, result_contacttype) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest_wider(result_objecttype, names_sep = &amp;#34;_&amp;#34;) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest(result_contacttype, names_sep = &amp;#34;_&amp;#34;) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest(result_contacttype_contact, names_sep = &amp;#34;_&amp;#34;) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest(result_contacttype_contact_fractie, names_sep = &amp;#34;_&amp;#34;) -&amp;gt; pi_type_party
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pi_type_party
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now we can make a count of the observations by relevant types of activity and party or visualize the results. First, we filter out legislative proposals made by MPs (&amp;lsquo;Voorstel van decreet&amp;rsquo;) and resolutions (&amp;lsquo;Voorstel van resolutie&amp;rsquo;).&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pi_type_party %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  filter(result_objecttype_naam == &amp;#34;Voorstel van decreet&amp;#34; 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;         | result_objecttype_naam == &amp;#34;Voorstel van resolutie&amp;#34;) -&amp;gt; pi_type_party_c
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Next, we group our data by party to arrive at a count. Alternatively, we can plot the results.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pi_type_party_c %&amp;gt;% 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  group_by(result_contacttype_contact_fractie_naam) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  count(result_objecttype_naam, sort = T) -&amp;gt; pi_type_party_cc
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;plot6 &amp;lt;- ggplot(pi_type_party_cc, aes(x = reorder(result_contacttype_contact_fractie_naam, -n), y = n, fill = result_objecttype_naam, colour = result_objecttype_naam)) + 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  geom_bar(stat =&amp;#34;identity&amp;#34;) +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  labs(x=&amp;#34;&amp;#34;, y = &amp;#34;Count&amp;#34;) + 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  theme_classic() +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  theme(axis.text.x = element_text(angle = 90, vjust=.5, hjust=1)) +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  theme(legend.title = element_blank())
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;plot6  
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;/plot6.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3. Voting records: Unnesting of the column &lt;code&gt;result_journaallijn-stemmingen&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pi_work %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  select(id_fact, &amp;#39;result_journaallijn-stemmingen&amp;#39;, result_objecttype) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest_wider(result_objecttype, names_sep = &amp;#34;_&amp;#34;) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest_wider(&amp;#39;result_journaallijn-stemmingen&amp;#39;) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest_longer(stemming) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest_wider(stemming) -&amp;gt; votes
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;One potential observation we can make is whether the MPs of opposition parties vote against &amp;lsquo;ontwerp van decreet&amp;rsquo; (i.e. those legislative proposals stemming from the Flemish government) and whether the MPs of the governing parties systematically vote in favor?
+Even more unnesting is needed for this, specifically of the columns &lt;code&gt;stemming-tegen&lt;/code&gt;, &lt;code&gt;stemming-voor&lt;/code&gt; and &lt;code&gt;fractie&lt;/code&gt;. We start we the votes &lt;em&gt;against&lt;/em&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;votes %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest(&amp;#39;stemming-tegen&amp;#39;, names_sep = &amp;#34;_&amp;#34;) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest_wider(&amp;#39;stemming-tegen&amp;#39;, names_sep = &amp;#34;_&amp;#34;) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest_longer(&amp;#39;stemming-tegen_persoon&amp;#39;) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest_wider(&amp;#39;stemming-tegen_persoon&amp;#39;)  %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest(fractie, names_sep = &amp;#34;_&amp;#34;) -&amp;gt; votes_against
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We can then assess the average percentage of MPs per party voting &lt;em&gt;against&lt;/em&gt; legislative proposals initiated by the government.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;votes_against %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  select(id_fact, fractie_naam, `fractie_zetel-aantal`, result_objecttype_naam) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  group_by(id_fact) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  filter(result_objecttype_naam == &amp;#34;Ontwerp van decreet&amp;#34;) %&amp;gt;% 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  add_count(fractie_naam) %&amp;gt;% 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  rename(&amp;#34;votes_against&amp;#34; = &amp;#34;n&amp;#34;) -&amp;gt; votes_against2
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;votes_against2 &amp;lt;- unique(votes_against2) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;votes_against2 &amp;lt;- na.omit(votes_against2) 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Same procedure for the votes &lt;em&gt;in favor&lt;/em&gt;. First, unnesting the relevant columns.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;votes %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest(&amp;#39;stemming-voor&amp;#39;, names_sep = &amp;#34;_&amp;#34;) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest_wider(&amp;#39;stemming-voor&amp;#39;, names_sep = &amp;#34;_&amp;#34;) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest_longer(&amp;#39;stemming-voor_persoon&amp;#39;) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest_wider(&amp;#39;stemming-voor_persoon&amp;#39;)  %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest(fractie, names_sep = &amp;#34;_&amp;#34;) -&amp;gt; votes_infavor
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We can then assess the average percentage of MPs per party voting &lt;em&gt;in favor of&lt;/em&gt; legislative proposals initiated by the government.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;votes_infavor %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  select(id_fact, fractie_naam, `fractie_zetel-aantal`, result_objecttype_naam) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  group_by(id_fact) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  filter(result_objecttype_naam == &amp;#34;Ontwerp van decreet&amp;#34;) %&amp;gt;% 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  add_count(fractie_naam) %&amp;gt;% 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  rename(&amp;#34;votes_favor&amp;#34; = &amp;#34;n&amp;#34;) -&amp;gt; votes_infavor2
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;votes_infavor2 &amp;lt;- unique(votes_infavor2) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;votes_infavor2 &amp;lt;- na.omit(votes_infavor2) 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Next, we join the data frames to assess the voting patterns of governing and oppositions parties regarding the legislative proposals initiated by government.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;votes_records &amp;lt;- full_join(votes_against2, votes_infavor2, by=c(&amp;#34;id_fact&amp;#34; = &amp;#34;id_fact&amp;#34;, &amp;#34;fractie_naam&amp;#34; = &amp;#34;fractie_naam&amp;#34;, &amp;#34;fractie_zetel-aantal&amp;#34; = &amp;#34;fractie_zetel-aantal&amp;#34;, &amp;#34;result_objecttype_naam&amp;#34; = &amp;#34;result_objecttype_naam&amp;#34;)) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;votes_records %&amp;gt;% 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  mutate(votes_favor = replace_na(votes_favor, 0)) %&amp;gt;% 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  mutate(votes_against = replace_na(votes_against, 0)) -&amp;gt; votes_records2
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Do the opposition parties mostly vote against and governing parties in favor?&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;votes_records2 %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  group_by(fractie_naam) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  mutate(prop_against = votes_against/`fractie_zetel-aantal`) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  summarise(m = mean(prop_against)) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  rename(&amp;#34;average prop. against&amp;#34; = &amp;#34;m&amp;#34;, &amp;#34;party&amp;#34; = &amp;#34;fractie_naam&amp;#34; ) -&amp;gt; votes_records_against
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;votes_records2 %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  group_by(fractie_naam)  %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  mutate(prop_favor = votes_favor/`fractie_zetel-aantal`) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  summarise(m = mean(prop_favor)) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  rename(&amp;#34;average prop. favor&amp;#34; = &amp;#34;m&amp;#34;, &amp;#34;party&amp;#34; = &amp;#34;fractie_naam&amp;#34; ) -&amp;gt; votes_records_infavor
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>flempar_members of parliament</title>
+      <link>/post/2022_09_26_post/</link>
+      <pubDate>Sat, 24 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>/post/2022_09_26_post/</guid>
+      <description>&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;knitr::opts_chunk$set(echo = TRUE)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In this post we delve into the &lt;code&gt;get_mp()&lt;/code&gt; function and the  parameters you can specify to query for more specific information.
+The &lt;code&gt;get_mp()&lt;/code&gt; function has the following arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;selection: options are &amp;ldquo;current&amp;rdquo;, &amp;ldquo;former&amp;rdquo; or &amp;ldquo;date&amp;rdquo;
+&lt;ul&gt;
+&lt;li&gt;when selecting &amp;ldquo;date&amp;rdquo;, &amp;ldquo;date_at&amp;rdquo; should be added as &amp;ldquo;YYYY-MM-DD&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;fact: options are &amp;ldquo;bio&amp;rdquo;, &amp;ldquo;career&amp;rdquo;, &amp;ldquo;education&amp;rdquo;, &amp;ldquo;presences_commissions&amp;rdquo;, &amp;ldquo;presences_plenary&amp;rdquo;, &amp;ldquo;political_info&amp;rdquo;, and &amp;ldquo;raw&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;use_parallel: Boolean of which the default value is set to TRUE, select FALSE in case you do not have multiple workers to speed up the calls made&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To retrieve the demographics of the MPs currently in parliament (same as default), we specify the following: &lt;code&gt;selection=&amp;quot;current&amp;quot;&lt;/code&gt; and &lt;code&gt;fact=&amp;quot;bio&amp;quot;&lt;/code&gt;. Note that you can each time store the data frame in your R-environment by including the following &lt;code&gt;&amp;lt;- name data frame&lt;/code&gt;. This has the benefit of storing the data in a table containing rows and columns that you can use for further data manipulation and analysis.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_bio &amp;lt;- get_mp(selection=&amp;#34;current&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                , fact=&amp;#34;bio&amp;#34;) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_bio
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The result of our query is a data frame with 124 observations, the exact number of MPs currently in office, and their demographics. You will see that the data frame is successfully stored under the tab &amp;lsquo;Environment&amp;rsquo;. This is how the data frame looks like:&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;/Output_get_mp_e1.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;You can, for instance, check the distribution of men and women in parliament. We make use of the pipe operator &lt;code&gt;%&amp;gt;%&lt;/code&gt; (which lets you pass an interim result onto the next function) and the data manipulation options from the &lt;code&gt;dplyr&lt;/code&gt; package. To count observations by group, we use &lt;code&gt;group_by()&lt;/code&gt; and &lt;code&gt;tally()&lt;/code&gt;. You can find more information on how to use &lt;code&gt;dplyr&lt;/code&gt; &lt;a href=&#34;https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_bio %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  group_by(geslacht) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  tally()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;example-2---extracting-demographics-at-specific-dates&#34;&gt;Example 2 - Extracting demographics at specific dates&lt;/h3&gt;
+&lt;p&gt;So let&amp;rsquo;s take this a step further and analyze whether the number of women in parliament has grown throughout the years. To do so, we will extract the demographics of MPs from &lt;strong&gt;past legislatures&lt;/strong&gt; (from 1995 onwards). We make use of the &lt;code&gt;get_legislatures()&lt;/code&gt; function to identify the starting dates of each legislature.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;get_legislatures()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Next, we specify the exact date from which we wish to collect the MPs&amp;rsquo; demographics. Here, we opt for 01/12 of the starting year of each legislature, to make sure all MPs are sworn in. Instead of &lt;code&gt;selection=&amp;quot;current&amp;quot;&lt;/code&gt;, we now fill in &lt;code&gt;selection=&amp;quot;date&amp;quot;&lt;/code&gt;and add the &lt;code&gt;date_at=&amp;quot;YYYY-MM-DD&amp;quot;&lt;/code&gt; argument in the the &lt;code&gt;get_mp()&lt;/code&gt; function.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_bio_1995 &amp;lt;- get_mp(selection=&amp;#34;date&amp;#34;, fact=&amp;#34;bio&amp;#34;, date_at =&amp;#34;1995-12-01&amp;#34;)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_bio_1999 &amp;lt;- get_mp(selection=&amp;#34;date&amp;#34;, fact=&amp;#34;bio&amp;#34;, date_at =&amp;#34;1999-12-01&amp;#34;)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_bio_2004 &amp;lt;- get_mp(selection=&amp;#34;date&amp;#34;, fact=&amp;#34;bio&amp;#34;, date_at =&amp;#34;2004-12-01&amp;#34;)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_bio_2009 &amp;lt;- get_mp(selection=&amp;#34;date&amp;#34;, fact=&amp;#34;bio&amp;#34;, date_at =&amp;#34;2009-12-01&amp;#34;)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_bio_2014 &amp;lt;- get_mp(selection=&amp;#34;date&amp;#34;, fact=&amp;#34;bio&amp;#34;, date_at =&amp;#34;2014-12-01&amp;#34;)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_bio_2019 &amp;lt;- get_mp(selection=&amp;#34;date&amp;#34;, fact=&amp;#34;bio&amp;#34;, date_at =&amp;#34;2019-12-01&amp;#34;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now, we will select the relevant columns to answer our question and add a column for year. We again make use of the pipe operator (which lets you pass an interim result onto the next function) and the data manipulation options from the &lt;code&gt;dplyr&lt;/code&gt; package (here: &lt;code&gt;select()&lt;/code&gt; and &lt;code&gt;add_column()&lt;/code&gt;).&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_bio_1995 %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  select(id_mp, geslacht) %&amp;gt;% add_column(year = 1995) -&amp;gt; mp_bio_1995
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_bio_1999 %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  select(id_mp, geslacht) %&amp;gt;% add_column(year = 1999) -&amp;gt; mp_bio_1999
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_bio_2004 %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  select(id_mp, geslacht) %&amp;gt;% add_column(year = 2004) -&amp;gt; mp_bio_2004
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_bio_2009 %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  select(id_mp, geslacht) %&amp;gt;% add_column(year = 2009) -&amp;gt; mp_bio_2009
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_bio_2014 %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  select(id_mp, geslacht) %&amp;gt;% add_column(year = 2014) -&amp;gt; mp_bio_2014
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_bio_2019 %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  select(id_mp, geslacht) %&amp;gt;% add_column(year = 2019) -&amp;gt; mp_bio_2019
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Finally, we combine these data frames into a single data frame, making use of &lt;code&gt;rbind()&lt;/code&gt;. This function allows to join data frames vertically, in other words, the data frames get pasted below each other.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_pastlegis &amp;lt;- rbind(mp_bio_1995, mp_bio_1999, mp_bio_2004, mp_bio_2009, mp_bio_2014, mp_bio_2019) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_pastlegis
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This data frame then allows us to answer our research question. Has the number of women MPs grown throughout the years? We opt to plot the results in a histogram, making use of the &lt;code&gt;ggplot&lt;/code&gt; package. A good place to start learning about ggplot is &lt;a href=&#34;https://ggplot2-book.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;plot1 &amp;lt;- ggplot(mp_pastlegis, aes(x = year, fill= geslacht, colour = geslacht), bins = 12) + 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                geom_histogram(binwidth=1.5, position = &amp;#34;dodge&amp;#34;) +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                labs(x=&amp;#34;Year&amp;#34;, y = &amp;#34;Count&amp;#34;) + 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                scale_x_continuous(breaks = c(1995, 1999, 2004, 2009, 2014, 2019)) +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                theme_classic() 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;plot1
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;/plot1.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h4 id=&#34;quick-elaboration-advanced&#34;&gt;Quick elaboration (advanced)&lt;/h4&gt;
+&lt;p&gt;Above, we present some very elaborate code, but with the advantage of simplicity to intuitively understand it. Here, we do it in a shorter, elegant, but more complex way.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;library(lubridate)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;leg &amp;lt;- get_legislatures() %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  filter(start &amp;gt;= ymd_hms(&amp;#34;1995-06-12 22:00:00&amp;#34;))
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;list &amp;lt;- vector(mode=&amp;#34;list&amp;#34;, length=length(leg))
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;for(i in 1:nrow(leg)){
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; list[[i]]&amp;lt;- get_mp(selection=&amp;#34;date&amp;#34;, fact=&amp;#34;bio&amp;#34;, date_at = date(leg$start[[i]]) + months(6), use_parallel=TRUE) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_pastlegis_2 &amp;lt;- data.table::rbindlist(list, fill=TRUE)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Comparing the &lt;code&gt;mp_pastlegis&lt;/code&gt; and the &lt;code&gt;mp_pastlegis_2&lt;/code&gt; data frames, you will notice that they contain the exact same number of observations.&lt;/p&gt;
+&lt;h3 id=&#34;example-3---combining-demographics-bio-with-political-information&#34;&gt;Example 3 - Combining demographics (bio) with political information&lt;/h3&gt;
+&lt;p&gt;We first collect the political information about the MPs currently in office. Instead of &lt;code&gt;fact=&amp;quot;bio&amp;quot;&lt;/code&gt;, you use &lt;code&gt;fact=&amp;quot;political_info&amp;quot;&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_polinfo &amp;lt;- get_mp(selection=&amp;#34;current&amp;#34;, fact=&amp;#34;political_info&amp;#34;) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_polinfo
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Normally, &lt;code&gt;mp_bio&lt;/code&gt; is still saved in your R-environment. If not, rerun the above line of code with &lt;code&gt;fact=&amp;quot;bio&amp;quot;&lt;/code&gt; and store the data frame. Next, we will combine the &lt;code&gt;mp_bio&lt;/code&gt; with the &lt;code&gt;mp_polinfo&lt;/code&gt; data frame, by using &lt;code&gt;left_join()&lt;/code&gt;. In most cases, you join two data frames horizontally (in other words, pasting them next to each other) by one or more common unique identifiers. In our case, these identifiers are &lt;code&gt;id_mp&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_bio %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  left_join(mp_polinfo, by=c(&amp;#34;id_mp&amp;#34;=&amp;#34;id_mp&amp;#34;)) -&amp;gt; mp_bio_polinfo 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Again, we can answer some fun research questions with these data. For instance, is the share of women and men equal across electoral districts? We can create a plot to visualize the results.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;plot2 &amp;lt;- ggplot(mp_bio_polinfo, aes(x = kieskring, fill= geslacht, colour = geslacht), bins = 12) + 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  geom_bar(position = &amp;#34;fill&amp;#34;) +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  labs(x=&amp;#34;Electoral district&amp;#34;, y = &amp;#34;Percentage&amp;#34;) + 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  theme_classic() +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  theme(axis.text.x = element_text(angle = 90)) +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  geom_hline(yintercept=0.50, linetype=&amp;#34;dashed&amp;#34;, 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;             color = &amp;#34;black&amp;#34;, size=1)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;plot2
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;/plot2.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h3 id=&#34;example-4---advanced-extra-unnesting-of-lists&#34;&gt;Example 4 - ADVANCED: Extra unnesting of lists&lt;/h3&gt;
+&lt;p&gt;The breadth of data available through the API is truly impressive. This also entails that we opted to return some data as &lt;strong&gt;nested lists&lt;/strong&gt; (list of lists) storing multiple types of values. Yet, we are here to extract those values from these nested lists and construct a data frame ready for analysis. A great resource to learn about (un)nesting is &lt;a href=&#34;https://tidyr.tidyverse.org/articles/rectangle.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For this example, we analyze MPs accumulation of local political mandates. To obtain information about this, we start from the data frame &lt;code&gt;mp_polinfo&lt;/code&gt; for which you filled in &lt;code&gt;fact=&amp;quot;political_info&amp;quot;&lt;/code&gt; in the &lt;code&gt;get_mp()&lt;/code&gt; function. Next, we will &lt;em&gt;unnest&lt;/em&gt; the column &lt;code&gt;mandaat-andere&lt;/code&gt; containing the info about MPs other mandates. To do so, we use &lt;code&gt;select()&lt;/code&gt; to only keep those variables/columns of interest and use &lt;code&gt;unnest()&lt;/code&gt; to dig up information from the nested columns.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_polinfo %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  select(id_mp, naam, voornaam, mandaat_andere) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest(mandaat_andere) -&amp;gt; cumul
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cumul
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The data frame &lt;code&gt;cumul&lt;/code&gt; now includes two new columns &lt;code&gt;mandaatgroepnaam&lt;/code&gt; and &lt;code&gt;parlmandaat&lt;/code&gt;. The latter column again being nested. So we still do not know the type of political mandate MPs hold at the local level. Are they a mayor, alder person or council member? To find out, we first filter out the local mandates using &lt;code&gt;filter()&lt;/code&gt; on the column &lt;code&gt;mandaatgroepnaam&lt;/code&gt; and then &lt;code&gt;unnest()&lt;/code&gt;the column &lt;code&gt;parlmandaat&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cumul %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  filter(mandaatgroepnaam == &amp;#34;Lokale mandaten&amp;#34;) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  unnest(parlmandaat) -&amp;gt; cumul_local
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cumul_local
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Next, we filter out the mandates MPs currently hold, leaving out former local functions by dropping all observations for which an end date (&lt;code&gt;datumtot&lt;/code&gt;) is registered. Additionally, we also drop all other non-relevant columns using &lt;code&gt;select()&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cumul_local %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  filter(is.na(datumtot)) %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  select(id_mp, naam, voornaam, datumvan, mandaat) -&amp;gt; local_mand
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;local_mand
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Finally, we create a new column in the data frame to register whether an MP holds a local function as mayor, alder person or council member. The column &lt;code&gt;mandaat&lt;/code&gt; holds text (string values), we therefore recode this text into a new categorical numerical variable via an &lt;code&gt;ifelse&lt;/code&gt; statement. To do so, we make use of the &lt;code&gt;%like%&lt;/code&gt; operator to search through the text and identify who holds what local function.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;local_mand$local_m &amp;lt;- ifelse(local_mand$mandaat %like% &amp;#34;burgemeester&amp;#34;, 1, 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                                    ifelse(local_mand$mandaat %like% &amp;#34;schepen&amp;#34;, 2, 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                                           ifelse(local_mand$mandaat %like% &amp;#34;gemeenteraadslid&amp;#34;, 3, 4))))
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Let&amp;rsquo;s count how many MPs hold a local mandate.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;n_distinct(local_mand$id_mp)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To visualize results, we make a plot.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;plot3 &amp;lt;- ggplot(local_mand, aes(x = as.factor(local_m))) + 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  geom_bar(stat=&amp;#34;count&amp;#34;, fill=&amp;#34;lightgreen&amp;#34;) +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  geom_text(stat=&amp;#39;count&amp;#39;, aes(label=..count..), vjust=-1) +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  labs(x=&amp;#34;Type of local mandate&amp;#34;, y = &amp;#34;Count&amp;#34;) +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  theme_classic() + 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  scale_x_discrete(labels=c(&amp;#34;1&amp;#34; = &amp;#34;Mayor&amp;#34;,&amp;#34;2&amp;#34; = &amp;#34;Alder&amp;#34;,&amp;#34;3&amp;#34; = &amp;#34;Council&amp;#34;, &amp;#34;4&amp;#34; = &amp;#34;Other&amp;#34;)) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;plot3
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;/plot3.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h4 id=&#34;quick-elaboration&#34;&gt;Quick elaboration&lt;/h4&gt;
+&lt;p&gt;And we can again join this data frame with another data frame. For example, to answer the following question: &lt;em&gt;Are mayors more frequently absent in parliament than other MPs?&lt;/em&gt;, we need to extract additional data about MPs presences in parliament (here: commissions). This can be done through filling in &lt;code&gt;fact=&amp;quot;presences_commissions&amp;quot;&lt;/code&gt; in the &lt;code&gt;get_mp()&lt;/code&gt; function. Alternatively, you can choose to look at MPs presences in plenary sessions via &lt;code&gt;fact=&amp;quot;presences_plenary&amp;quot;&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_commissions &amp;lt;- get_mp(selection=&amp;#34;current&amp;#34;, fact=&amp;#34;presences_commissions&amp;#34;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We can then quickly explore these data to see which MPs are most often present/absent in the parliamentary committee sessions of which they are an &lt;em&gt;effective&lt;/em&gt; member. We opted to focus on the top 10 most present/absent MPs (&lt;code&gt;top_n(#, name column)&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_commissions %&amp;gt;% select(id_mp, naam, voornaam, commissie_afkorting, commissie_id, `vast-lid-aanwezigheid_aanwezig`) %&amp;gt;% top_n(10, `vast-lid-aanwezigheid_aanwezig`) #present
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_commissions %&amp;gt;% select(id_mp, naam, voornaam, commissie_afkorting, commissie_id, `vast-lid-aanwezigheid_afwezig`) %&amp;gt;% top_n(10, `vast-lid-aanwezigheid_afwezig`) #absent
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To answer the question, we first select the relevant columns and then join the &lt;code&gt;mp_commissions&lt;/code&gt; data frame with the &lt;code&gt;local_mand&lt;/code&gt; data frame. We also exclude those observations that are not an effective member of a certain commission and therefore got assigned &lt;code&gt;NA&lt;/code&gt; when registering their commission presences.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;local_mand %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  select(id_mp, local_m) -&amp;gt; local_mand2
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_commissions %&amp;gt;%
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  select(id_mp, voornaam, naam, commissie_afkorting, commissie_id, `vast-lid-aanwezigheid_aanwezig`, `vast-lid-aanwezigheid_afwezig`, `vast-lid-aanwezigheid_verontschuldigd`) -&amp;gt; mp_commissions
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Next, we implement a &lt;code&gt;full_join&lt;/code&gt; of both the &lt;code&gt;local_mand2&lt;/code&gt; data frame and the &lt;code&gt;mp_commissions&lt;/code&gt; data frame. Additionally, we assign the value &amp;lsquo;0&amp;rsquo; to MPs holding no local mandate.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_m_comm &amp;lt;- full_join(local_mand2, mp_commissions, by=c(&amp;#34;id_mp&amp;#34; = &amp;#34;id_mp&amp;#34;)) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_m_comm$local_m &amp;lt;- ifelse(is.na(mp_m_comm$local_m), 0, mp_m_comm$local_m)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mp_m_comm %&amp;gt;% 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  filter(!is.na(`vast-lid-aanwezigheid_afwezig`) &amp;amp; !is.na(`vast-lid-aanwezigheid_aanwezig`) &amp;amp; !is.na(`vast-lid-aanwezigheid_verontschuldigd`)) -&amp;gt; mp_m_comm_omit
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Finally, we can visualize the results and conclude that mayors are not significantly more absent in commission sessions than other MPs. The data thus refutes the often heard claim that combining a local political mandate with a mandate in the Flemish parliament hampers parliamentary work.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;plot4 &amp;lt;- ggplot(mp_m_comm_omit, aes(x=factor(local_m), y=`vast-lid-aanwezigheid_afwezig`, group=factor(local_m), fill=factor(local_m))) + 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  geom_boxplot(outlier.colour=&amp;#34;red&amp;#34;, outlier.shape=8, outlier.size=4) +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  labs(x=&amp;#34;Type of local mandate&amp;#34;, y = &amp;#34;Absences in committee meetings&amp;#34;) +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  theme_classic() +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  scale_x_discrete(labels=c(&amp;#34;0&amp;#34; = &amp;#34;None&amp;#34;,&amp;#34;1&amp;#34; = &amp;#34;Mayor&amp;#34;,&amp;#34;2&amp;#34; = &amp;#34;Alder&amp;#34;,&amp;#34;3&amp;#34; = &amp;#34;Council&amp;#34;, &amp;#34;4&amp;#34; = &amp;#34;Other&amp;#34;)) + 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  theme(legend.position = &amp;#34;none&amp;#34;)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;plot4 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;/plot4.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Getting started with flempar</title>
+      <link>/post/2022_09_07_post/</link>
+      <pubDate>Wed, 07 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>/post/2022_09_07_post/</guid>
+      <description>&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;knitr::opts_chunk$set(echo = TRUE)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;The Flemish Parliament makes its database available via web services: &lt;a href=&#34;http://ws.vlpar.be/e/opendata/api&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://ws.vlpar.be/e/opendata/api&lt;/a&gt;. These data are open and free to use without restrictions. The &lt;strong&gt;flempar R-package&lt;/strong&gt; is made for querying the web API. It parses the API responses and transforms JSON into a useful object (i.e. data frame) for the end-user.&lt;/p&gt;
+&lt;p&gt;This R-package is the result of a collaboration between Wouter Van Dooren, Evelien Willems, both from the Department of Political Science at the University of Antwerp, and Frederik Heylen, founder of &lt;a href=&#34;https://datamarinier.be/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Datamarinier&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In this series of blog posts, we are going to use the &lt;strong&gt;flempar&lt;/strong&gt; package to collect and analyze:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Key characteristics of Flemish members of parliament (MPs): &lt;code&gt;get_mp()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Parliamentary work, including speeches and documents: &lt;code&gt;get_work()&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We guide you through several specific research questions for each of these two functions to demonstrate the package&amp;rsquo;s various applications and showcase the wealth of available data. After going through all blog posts, you will be able to work out how to extract other data suited to your particular research questions from the API of the Flemish Parliament. But first things first, let&amp;rsquo;s get started!&lt;/p&gt;
+&lt;h2 id=&#34;getting-started&#34;&gt;Getting started&lt;/h2&gt;
+&lt;p&gt;You can install the &lt;code&gt;flempar&lt;/code&gt; package from the GitHub account of the Political Science Department of the University of Antwerp, &lt;a href=&#34;https://github.com/PolscienceAntwerp/flempar&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/PolscienceAntwerp/flempar&lt;/a&gt;. &lt;strong&gt;Mac users&lt;/strong&gt; will also need to install &lt;a href=&#34;https://apps.apple.com/be/app/xcode/id497799835?mt=12&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Xcode&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;require(devtools) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;install_github(&amp;#34;PolscienceAntwerp/flempar&amp;#34;) 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We then load the &lt;code&gt;flempar&lt;/code&gt; package along with the &lt;a href=&#34;https://www.tidyverse.org/packages/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;tidyverse&lt;/a&gt; suite of R packages to manipulate the data and visualize some results. Additionally, we load in &lt;code&gt;data.table&lt;/code&gt;, making working with data frames easier (more info &lt;a href=&#34;https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;here&lt;/a&gt;).&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;library(flempar)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;library(dplyr) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;library(tidyr) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;library(tibble) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;library(ggplot2) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;library(stringr)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;library(data.table)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In case you don&amp;rsquo;t have these extra R-packages already installed. Run the following code first, &lt;em&gt;then&lt;/em&gt; run the above chunk of code.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;install.packages(&amp;#34;dplyr&amp;#34;) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;install.packages(&amp;#34;tidyr&amp;#34;) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;install.packages(&amp;#34;tibble&amp;#34;) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;install.packages(&amp;#34;ggplot2&amp;#34;) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;install.packages(&amp;#34;data.table&amp;#34;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now, let&amp;rsquo;s test whether the installation worked! You can try running the &lt;code&gt;get_mp()&lt;/code&gt; function with its default options, specifying no parameters. This delivers you the demographics of the current MPs. At the moment of writing this blog post, this comprises all MPs seating in the 2019-2024 legislature.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;get_mp()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;When making calls, you get feedback about the number of calls that will be made. Depending on the number of calls, this might take a couple of seconds to several minutes. If the call succeeds, the exact time needed to do so gets displayed.&lt;/p&gt;
+&lt;p&gt;In this regard, the build-in &lt;code&gt;use_parallel=TRUE&lt;/code&gt; argument is one of the main advantages of using our &lt;code&gt;flempar&lt;/code&gt; package. This functionality ensures that instead of serial processing (i.e. one batch after the other), your computer is told to divide the work among its processing cores to execute the work in parallel (i.e. simultaneously); which significantly speeds up the data retrieving process. So, in almost all instances, you will want keep the default-setting &lt;code&gt;use_parallel=TRUE&lt;/code&gt;, which makes it unnecessary to explicitely specificy this as a parameter in the function.&lt;/p&gt;
+&lt;p&gt;Example of feedback:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;✔ Getting the data.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;✔ Making 124 calls.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;✔ Made 124 calls in 149.5 seconds.  
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;What you get is a simple overview of the data. This is how the output looks like:&lt;/p&gt;
+&lt;p&gt;![](Markdown images/DefaultOutput_get_mp.png)&lt;/p&gt;
+&lt;p&gt;So on to the &lt;code&gt;get_work()&lt;/code&gt;function. In contrast to the &lt;code&gt;get_mp&lt;/code&gt; function, you &lt;em&gt;always&lt;/em&gt; need to specify a date range using the following arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;date_range_from: the start date YYYY-MM-DD&lt;/li&gt;
+&lt;li&gt;date_range_to: the end date YYYY-MM-DD&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;As an enormous amount of data can be retrieved through the &lt;code&gt;get_work()&lt;/code&gt; function, it is highly &lt;strong&gt;recommended to test your query on a limited date range&lt;/strong&gt; before expanding the date range to comprise multiple months to years. As no other parameters are specified, you end up the default data, namely info about plenary debates.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;get_work(date_range_from=&amp;#34;2022-03-01&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;          , date_range_to=&amp;#34;2022-03-15&amp;#34;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Again, you get some performance feedback about the calls being made and a first rough look at the output.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;That&amp;rsquo;s it, you&amp;rsquo;ve now covered the basics of the &lt;code&gt;flempar&lt;/code&gt; package!&lt;/strong&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
