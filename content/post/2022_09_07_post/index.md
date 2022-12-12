@@ -42,15 +42,12 @@ authors:
 ---
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 ## Introduction
 
 The Flemish Parliament makes its database available via web services: <http://ws.vlpar.be/e/opendata/api>. These data are open and free to use without restrictions. The **flempar R-package** is made for querying the web API. It parses the API responses and transforms JSON into a useful object (i.e. data frame) for the end-user.
 
-This R-package is the result of a collaboration between Wouter Van Dooren, Evelien Willems, both from the Department of Political Science at the University of Antwerp, and Frederik Heylen, co-founder of [Datamarinier](https://datamarinier.be/).
+This R-package is the result of a collaboration between Wouter Van Dooren, Evelien Willems, both from the Department of Political Science at the University of Antwerp, and Frederik Heylen, founder of [Datamarinier](https://datamarinier.be/).
 
 In this series of blog posts, we are going to use the **flempar** package to collect and analyze:
 
