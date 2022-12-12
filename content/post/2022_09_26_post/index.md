@@ -1,5 +1,5 @@
 ---
-title: flempar_members of parliament
+title: Retrieving members of parliament
 
 # Summary for listings and search engines
 summary: Who are the MPs?
