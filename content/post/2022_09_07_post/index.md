@@ -109,7 +109,7 @@ Made 124 calls in 143.7 seconds.
 
 What you get is a simple overview of the data. This is how the output looks like:
 
-![](Markdown images/DefaultOutput_get_mp.png) 
+![](content/post/2022_09_07_post/DefaultOutput_get_mp.png) 
 
 So on to the `get_work()`function. In contrast to the `get_mp` function, you *always* need to specify a date range using the following arguments:
 
