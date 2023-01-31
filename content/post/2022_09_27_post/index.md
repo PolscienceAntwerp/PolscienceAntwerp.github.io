@@ -2,7 +2,7 @@
 title: Retrieving parliamentary work
 
 # Summary for listings and search engines
-summary: MP's at work. 
+summary: MPs at work. 
 
 # Link this post with a project
 projects: []
