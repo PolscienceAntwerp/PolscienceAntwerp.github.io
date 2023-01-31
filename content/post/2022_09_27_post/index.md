@@ -1,5 +1,5 @@
 ---
-title: flempar_parliamentary work
+title: Retrieving parliamentary work
 
 # Summary for listings and search engines
 summary: MP's at work. 
@@ -40,10 +40,6 @@ authors:
 ---
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 In this post we delve into the `get_work()` function and the  parameters you can specify to query for more specific information.
 
 ### Example 1 - Basic functionalities
@@ -80,7 +76,8 @@ The `get_work()` function has the following arguments:
 * plen_comm: choose between plenary "plen" and commission "comm" sessions
 * use_parallel: Boolean of which the default value is set to TRUE, select FALSE in case you do not have multiple workers to speed up the calls made
 * raw: Boolean of which the default value is set to FALSE, select TRUE in case you wish to retrieve the unprocessed data
-* extra_via_fact: Boolean of which the default value is set to FALSE, select TRUE in case you wish to retrieve the unique identifiers of documents outside the date range specified but linked to the "fact".
+* extra_via_fact: Boolean of which the default value is set to FALSE, select TRUE in case you wish to retrieve the unique identifiers of documents outside the date range specified but linked to the "fact"
+* two_columns_pdf: Boolean of which the default value is set to FALSE, select TRUE in case you encounter two-columned PDFs.
 
 So let's, for instance, query for some specific type of parliamentary work conducted in 2021. Here, we opt to retrieve data about parliamentary initiatives (`fact="parliamentary_initiatives"`) discussed in the plenary (`plen_comm="plen"`) sessions (`date_range_from="2021-01-01"`and `date_range_to="2021-12-31"`). We also specify that we are interested in the `type="details"` as this will deliver us a data frame containing the essentials about each parliamentary initiative. 
 
@@ -122,7 +119,8 @@ wq_work_doc %>%
 
 This call delivers you a data frame with (at least) the following columns:
 
-* id_fact: unique identifier linking to the specific parliamentary activity the document is associated with (in this example, the written question)
+* id_fact: unique identifier linking to the specific parliamentary activity the document is associated with (here, the written question)
+* publicatiedatum: date the document was published
 * text: each row in this column contains the text contained in the document
 
 The data frame can be manipulated further to make it ready for text analysis. First, matching the data frame with the `details` of its associated written questions is possible via `id_fact`.
@@ -170,36 +168,21 @@ This call delivers you a data frame with the following columns:
 * text: each row in this column contains the 'speech' per individual speaker.
 * sprekertitel: identifies who is speaking.
 * persoon_id: the unique identifier for each individual.
+* id_fact: unique identifier linking to the specific parliamentary activity the speech is associated with (here, oral questions and interpellations).
 
-Matching this data frame with the `details` of these oral questions is possible via the `journaallijn_id`. Here, we show you how to extract the `journaallijn_id` from the `details` data frame through *unnesting* the column `result_procedureverloop` and then the column `journaallijn`. 
+Matching this data frame with the `details` of these oral questions is possible via the `journaallijn_id`. First, we get the details of the oral questions and interpellations.
 
 ```{r eval=FALSE}
 oq_details <- get_work(date_range_from="2022-03-01"
                     , date_range_to="2022-03-31"
                     , fact="oral_questions_and_interpellations"
                     , type="details"
-                    , plen_comm="comm"
-                    , use_parallel=TRUE) 
+                    , plen_comm="comm") 
 ```
-```{r eval=FALSE}
-oq_details %>% 
-  unnest(result_procedureverloop) %>% 
-  unnest_wider(journaallijn, names_sep = "_") -> oq_details_jln
-```
-Upon inspection of this data frame, you will notice that the `journaallijn_id` is not automatically filled in across all rows. To end up again with  non-repeated observations (i.e. unique rows), we filter out those rows **not** containing the `journaallijn_id`.
+Now we are ready to join the `oq_speech`data frame with the `oq_details` data frame containing the 'speech' per oral question. We do this based on a combination of two unique identifiers: `id_fact` and `journaallijn_id`.
 
 ```{r eval=FALSE}
-oq_details_jln %>%
-  filter(!is.na(journaallijn_id)) -> oral_questions
-```
-
-Now we are ready to join the `oral_questions`data frame with the `mp_oq_speech` data frame containing the 'speech' per oral question.
-
-```{r eval=FALSE}
-oq_speech %>% 
-  mutate(journaallijn_id = as.numeric(journaallijn_id)) -> oq_speech
-
-questions_speech <- left_join(oral_questions, oq_speech, by=c("journaallijn_id")) 
+questions_speech <- left_join(oq_speech, oq_details, by=c("id_fact", "journaallijn_id")) 
 ```
 
 Finally, we can also **search** these spoken words for **specific key words** occurring. We again use the `search_terms()` function. We opt to retrieve data about the PFOS/PFAS debate in Belgium (`search_terms = c("PFOS", "PFAS")`). 
@@ -210,19 +193,17 @@ questions_speech %>%
   search_terms(text_field = c("text"), search_terms = c("PFOS", "PFAS")) -> PFAS_oq
 ```
 
-### Example 4 - ADVANCED: Extra unnesting of lists
+### Example 4 - ADVANCED: Working with pipes, tidyverse, and extra unnesting of lists
 
 Though, as you may have noticed from your first inspection of the data frame, the `get_work()` function from the get-go confronts you with a couple of *nested* columns. We will go over several examples to dig up relevant information from these *lists in lists*. Keep in mind that it is recommended to go step-by-step when going deeper into the lists as it is far too easy to end up with a giant unfitting data frame when combining multiple 'unnestings' at once without knowing the exact content of the data stored within the lists.
 
-**1. Topics by type of activity: unnesting of the column `result_objecttype`**
+**1. Topics by type of activity
 
 Here, we use the `pi_work` data frame that we created in the first example of this post to demonstrate how to 'unnest' columns.
 
 ```{r eval=FALSE}
 pi_work %>%
-  select(id_fact, result_objecttype, result_thema_1) %>%
-  unnest_wider(result_objecttype) %>%
-  select(id_fact, naam, result_thema_1) -> work_type_topics
+   select(id_fact, type_specifiek, result_thema_1) -> work_type_topics
 work_type_topics
 ```
 
@@ -230,19 +211,19 @@ Now we can make a count of the observations by relevant types of activity or vis
 
 ```{r eval=FALSE}
 work_type_topics %>%
-  filter(naam == "Ontwerp van decreet" 
-         | naam == "Voorstel van decreet" 
-         | naam == "Voorstel van resolutie") -> work_type_topics
+  filter(type_specifiek == "Ontwerp van decreet" 
+         | type_specifiek == "Voorstel van decreet" 
+         | type_specifiek == "Voorstel van resolutie") -> work_type_topics
 work_type_topics
 ```
 ```{r eval=FALSE}
 work_type_topics %>% 
-  group_by(naam) %>%
+  group_by(type_specifiek) %>%
   count(result_thema_1, sort = T) -> work_type_topics_c
 work_type_topics_c
 ```
 ```{r eval=FALSE}
-plot5 <- ggplot(work_type_topics_c, aes(x = reorder(result_thema_1, -n), y = n, fill= naam, colour = naam)) + 
+plot5 <- ggplot(work_type_topics_c, aes(x = reorder(result_thema_1, -n), y = n, fill= type_specifiek, colour = type_specifiek)) + 
   geom_bar(stat = "identity") +
   labs(x="", y = "Count") + 
   theme_classic() +
