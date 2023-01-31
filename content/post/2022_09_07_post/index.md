@@ -47,7 +47,7 @@ authors:
 
 The Flemish Parliament makes its database available via web services: <http://ws.vlpar.be/e/opendata/api>. These data are open and free to use without restrictions. The **flempar R-package** is made for querying the web API. It parses the API responses and transforms JSON into a useful object (i.e. data frame) for the end-user.
 
-This R-package is the result of a collaboration between Wouter Van Dooren, Evelien Willems, both from the Department of Political Science at the University of Antwerp, and Frederik Heylen, founder of [Datamarinier](https://datamarinier.be/).
+This R-package is the result of a collaboration between Wouter Van Dooren, Evelien Willems, both from the [Department of Political Science](https://www.uantwerpen.be/nl/overuantwerpen/faculteiten/faculteit-sociale-wetenschappen/organisatie/departementen/politieke-wetenschap/) at the University of Antwerp , and Frederik Heylen, founder of [Datamarinier](https://datamarinier.be/).
 
 In this series of blog posts, we are going to use the **flempar** package to collect and analyze:
 
@@ -103,9 +103,8 @@ In this regard, the build-in `use_parallel=TRUE` argument is one of the main adv
 Example of feedback:
 
 ```{r eval=FALSE}
-✔ Getting the data.
-✔ Making 124 calls.
-✔ Made 124 calls in 149.5 seconds.  
+Making 124 calls.
+Made 124 calls in 143.7 seconds.  
 ```
 
 What you get is a simple overview of the data. This is how the output looks like:
@@ -117,7 +116,7 @@ So on to the `get_work()`function. In contrast to the `get_mp` function, you *al
 * date_range_from: the start date YYYY-MM-DD
 * date_range_to: the end date YYYY-MM-DD
 
-As an enormous amount of data can be retrieved through the `get_work()` function, it is highly **recommended to test your query on a limited date range** before expanding the date range to comprise multiple months to years. As no other parameters are specified, you end up the default data, namely info about plenary debates. 
+As an enormous amount of data can be retrieved through the `get_work()` function, it is highly **recommended to test your query on a limited date range** before expanding the date range to comprise multiple months to years. As no other parameters are specified, you end up with the default data, namely info about plenary debates. 
 
 ```{r eval=FALSE}
 get_work(date_range_from="2022-03-01"
