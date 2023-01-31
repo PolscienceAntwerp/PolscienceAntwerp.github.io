@@ -39,10 +39,6 @@ authors:
 #  - 教程
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 In this post we delve into the `get_mp()` function and the  parameters you can specify to query for more specific information.
 The `get_mp()` function has the following arguments:
 
