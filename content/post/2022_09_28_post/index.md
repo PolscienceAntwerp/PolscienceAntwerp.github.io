@@ -1,8 +1,8 @@
 ---
-title: Flempar the extra's
+title: flempar - the extra's
 
 # Summary for listings and search engines
-summary: Some nice extra's to the Flempar package. 
+summary: Some nice extra's to the flempar package. 
 
 # Link this post with a project
 projects: []
