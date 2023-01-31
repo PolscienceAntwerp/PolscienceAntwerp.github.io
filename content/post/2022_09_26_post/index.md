@@ -167,7 +167,7 @@ plot2 <- ggplot(mp_bio_polinfo, aes(x = kieskring, fill= geslacht, colour = gesl
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90)) +
   geom_hline(yintercept=0.50, linetype="dashed", 
-             color = "black", size=1)
+             color = "black", linewidth=1)
 plot2
 ```
 ![](/plot2.png) 
@@ -208,7 +208,7 @@ Finally, we create a new column in the data frame to register whether an MP hold
 ```{r eval=FALSE}
 local_mand$local_m <- ifelse(local_mand$mandaat %like% "burgemeester", 1, 
                                     ifelse(local_mand$mandaat %like% "schepen", 2, 
-                                           ifelse(local_mand$mandaat %like% "gemeenteraadslid", 3, 4))))
+                                           ifelse(local_mand$mandaat %like% "gemeenteraadslid", 3, 4)))
 ```
 
 Let's count how many MPs hold a local mandate.
@@ -222,7 +222,7 @@ To visualize results, we make a plot.
 ```{r eval=FALSE}
 plot3 <- ggplot(local_mand, aes(x = as.factor(local_m))) + 
   geom_bar(stat="count", fill="lightgreen") +
-  geom_text(stat='count', aes(label=..count..), vjust=-1) +
+  geom_text(stat='count', aes(label=after_stat(count)), vjust=-1) +
   labs(x="Type of local mandate", y = "Count") +
   theme_classic() + 
   scale_x_discrete(labels=c("1" = "Mayor","2" = "Alder","3" = "Council", "4" = "Other")) 
