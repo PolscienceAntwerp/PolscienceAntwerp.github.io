@@ -2,7 +2,7 @@
 title: Getting started with flempar
 
 # Summary for listings and search engines
-summary: Flempar - your gateway to the Flemish parliament data
+summary: flempar - your gateway to the Flemish parliament data
 
 # Link this post with a project
 projects: []
