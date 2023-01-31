@@ -120,7 +120,7 @@ As an enormous amount of data can be retrieved through the `get_work()` function
 
 ```{r eval=FALSE}
 get_work(date_range_from="2022-03-01"
-          , date_range_to="2022-03-15")
+         , date_range_to="2022-03-15")
 ```
 Again, you get some performance feedback about the calls being made and a first rough look at the output.
 
