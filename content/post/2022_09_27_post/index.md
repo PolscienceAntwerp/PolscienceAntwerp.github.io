@@ -77,7 +77,7 @@ The `get_work()` function has the following arguments:
 * use_parallel: Boolean of which the default value is set to TRUE, select FALSE in case you do not have multiple workers to speed up the calls made
 * raw: Boolean of which the default value is set to FALSE, select TRUE in case you wish to retrieve the unprocessed data
 * extra_via_fact: Boolean of which the default value is set to FALSE, select TRUE in case you wish to retrieve the unique identifiers of documents outside the date range specified but linked to the "fact"
-* two_columns_pdf: Boolean of which the default value is set to FALSE, select TRUE in case you encounter two-columned PDFs.
+* two_columns_pdf: Boolean of which the default value is set to FALSE, select TRUE in case you encounter PDFs divided into two text columns. A standard method cannot deal with this, this method ensures that this is read correctly
 
 So let's, for instance, query for some specific type of parliamentary work conducted in 2021. Here, we opt to retrieve data about parliamentary initiatives (`fact="parliamentary_initiatives"`) discussed in the plenary (`plen_comm="plen"`) sessions (`date_range_from="2021-01-01"`and `date_range_to="2021-12-31"`). We also specify that we are interested in the `type="details"` as this will deliver us a data frame containing the essentials about each parliamentary initiative. 
 
