@@ -1,5 +1,5 @@
 title = "flempar"
-baseURL = "https://gohugo-theme-ananke.pages.dev"
+baseURL = "https://www.flempar.be"
 languageCode = "en-us"
 theme = "gohugo-theme-ananke"
 resourceDir = "../resources"
