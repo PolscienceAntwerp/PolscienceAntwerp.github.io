@@ -1,11 +1,29 @@
 ---
 title: "Documentation"
-description: "A few years ago, while visiting or, rather, rummaging about Notre-Dame, the author of this book found, in an obscure nook of one of the towers, the following word, engraved by hand upon the wall: —ANANKE."
+description: ""
 #featured_image: '/images/ai_center_cut.png'
 menu:
   main:
     weight: 1
 ---
-{{< figure src="/images/Victor_Hugo-Hunchback.jpg" title="Illustration from Victor Hugo et son temps (1881)" >}}
 
-_The Hunchback of Notre-Dame_ (French: _Notreor Frederic Shoberl named the novel The Hunchback of Notre Dame in 1833 because at the time, Gothic novels were more popular than Romance novels in England. The story is set in Paris, France in the Late Middle Ages, during the reign of Louis XI.
+## Citation
+Heylen F., Willems E. & Van Dooren W. *flempar: An interface to the API of the Flemish Parliament*. https://github.com/PolscienceAntwerp/Flempar. 
+
+## Developers
+[Frederik Heylen](https://datamarinier.be/team.html). Author. Datamarinier.
+
+[Evelien Willems](https://evelienwillems.be/). Analyst & Contributor. Department of Political Science, University of Antwerp.
+
+[Wouter Van Dooren](https://www.woutervandooren.eu/). Contributor. Department of Political Science, University of Antwerp.
+
+**Department of Political Science, University of Antwerp**. Copyright holder, funder.
+
+## Installation guide
+
+*Coming soon*. 
+
+## Codebooks
+
+You can find an overview of all possible data output  [here](https://docs.google.com/spreadsheets/d/1x4E3nK1ymuOqAB37y0n1XBFF5GbsJ58CJoZvdqmA70c/edit?usp=sharing). 
+

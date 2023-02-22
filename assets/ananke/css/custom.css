@@ -1,0 +1,11 @@
+header .fw1 {
+  font-weight: bold;
+}
+main .ph5-l {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+main .measure-wide {
+  max-width: 40em;
+}
