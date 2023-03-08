@@ -1,5 +1,6 @@
 ---
 title: Retrieving members of parliament
+author: ["Evelien Willems", "Frederik Heylen"]
 
 # Summary for listings and search engines
 summary: Who are the MPs?
@@ -26,9 +27,6 @@ image:
   focal_point: ''
   placement: 2
   preview_only: false
-
-authors:
-  - Evelien Willems and Frederik Heylen
 
 # tags:
 #  - Academic

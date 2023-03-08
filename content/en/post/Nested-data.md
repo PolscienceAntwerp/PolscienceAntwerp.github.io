@@ -1,5 +1,7 @@
 ---
 title: Working with nested data
+author: ["Evelien Willems"]
+featured_image: '/images/c_feature17.png'
 
 # Summary for listings and search engines
 summary: How to extract data nested in lists in lists. 
@@ -17,18 +19,15 @@ lastmod: '2023-01-30T00:00:00Z'
 draft: false
 
 # Show this page in the Featured widget?
-featured: false
+featured: true
 
 # Featured image
 # Place an image named `featured.jpg/png` in this page's folder and customize its options here.
-image:
+image: 
   caption: ''
   focal_point: ''
   placement: 2
   preview_only: false
-
-authors:
-  - Evelien Willems and Frederik Heylen
 
 # tags:
 #  - Academic

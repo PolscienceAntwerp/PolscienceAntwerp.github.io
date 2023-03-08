@@ -1,5 +1,7 @@
 ---
 title: Getting started with flempar
+author: ["Evelien Willems", "Frederik Heylen"]
+featured_image: '/images/c_feature15.png'
 
 # Summary for listings and search engines
 summary: Your gateway to the Flemish parliament data
@@ -27,11 +29,6 @@ image:
   placement: 2
   preview_only: false
 
-authors: 
-  - Evelien Willems and Frederik Heylen
-#  - admin
-
-
 # tags:
 #  - Academic
 #  - 开源
@@ -56,7 +53,7 @@ In this series of blog posts, we are going to use the **flempar** package to col
 
 We guide you through several specific research questions for each of these two functions to demonstrate the package's various applications and showcase the wealth of available data. After going through all blog posts, you will be able to work out how to extract other data suited to your particular research questions from the API of the Flemish Parliament. But first things first, let's get started!
 
-## Getting started
+## Download and installation
 
 You can install the `flempar` package from the GitHub account of the Political Science Department of the University of Antwerp, <https://github.com/PolscienceAntwerp/flempar>. **Mac users** will also need to install [Xcode](https://apps.apple.com/be/app/xcode/id497799835?mt=12). 
 
@@ -89,6 +86,8 @@ install.packages("ggplot2")
 
 install.packages("data.table")
 ```
+
+## First try out
 
 Now, let's test whether the installation worked! You can try running the `get_mp()` function with its default options, specifying no parameters. This delivers you the demographics of the current MPs. At the moment of writing this blog post, this comprises all MPs seating in the 2019-2024 legislature.
 

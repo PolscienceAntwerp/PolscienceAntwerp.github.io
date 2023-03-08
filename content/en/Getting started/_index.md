@@ -1,7 +1,7 @@
 ---
 title: "Getting started"
 description: ""
-#featured_image: '/images/ai_center_cut.png'
+#featured_image: '/images/banner.jpg'
 menu:
   main:
     weight: 1
@@ -10,8 +10,6 @@ menu:
 ## Introduction
 
 The Flemish Parliament makes its database available via web services: <http://ws.vlpar.be/e/opendata/api>. These data are open and free to use without restrictions. The **flempar R-package** is made for querying the web API. It parses the API responses and transforms JSON into a useful object (i.e. data frame) for the end-user.
-
-This R-package is the result of a collaboration between Wouter Van Dooren, Evelien Willems, both from the [Department of Political Science](https://www.uantwerpen.be/nl/overuantwerpen/faculteiten/faculteit-sociale-wetenschappen/organisatie/departementen/politieke-wetenschap/) at the University of Antwerp, and Frederik Heylen, founder of [Datamarinier](https://datamarinier.be/).
 
 In these posts, we are going to use the **flempar** package to collect and analyze:
 

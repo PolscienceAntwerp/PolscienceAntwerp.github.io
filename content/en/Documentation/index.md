@@ -8,12 +8,17 @@ menu:
 ---
 
 ## Citation
-Heylen F., Willems E. & Van Dooren W. *flempar: An interface to the API of the Flemish Parliament*. https://github.com/PolscienceAntwerp/Flempar. 
+#### Software package
+Willems E., Heylen F. & Van Dooren W. *flempar: An interface to the API of the Flemish Parliament*. https://github.com/PolscienceAntwerp/Flempar. 
+#### Project
+Willems E., Heylen F. & Van Dooren W. *flempar: An interface to the API of the Flemish Parliament*. www.flempar.be. 
+
+
 
 ## Developers
 [Frederik Heylen](https://datamarinier.be/team.html). Author. Datamarinier.
 
-[Evelien Willems](https://evelienwillems.be/). Analyst & Contributor. Department of Political Science, University of Antwerp.
+[Evelien Willems](https://evelienwillems.be/). Analyst, Tester & Contributor. Department of Political Science, University of Antwerp.
 
 [Wouter Van Dooren](https://www.woutervandooren.eu/). Contributor. Department of Political Science, University of Antwerp.
 

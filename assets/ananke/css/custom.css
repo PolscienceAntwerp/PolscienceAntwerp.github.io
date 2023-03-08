@@ -1,6 +1,27 @@
 header .fw1 {
   font-weight: bold;
 }
+
+header .f-5-l, .f-subheadline-l {
+  font-size: 5rem;
+}
+
+header .fw2 {
+  font-weight: 200;
+}
+
+header .f1-l {
+  font-size: 3rem;
+}
+
+header .mb0 {
+  margin-bottom: 0;
+}
+
+header .lh-title {
+  line-height: 1.25;
+}
+  
 main .ph5-l {
   padding-left: 2rem;
   padding-right: 2rem;

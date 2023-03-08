@@ -1,5 +1,8 @@
 ---
 title: Some nice extra's
+author: ["Evelien Willems", "Frederik Heylen"]
+featured_image: '/images/c_feature13.png'
+
 
 # Summary for listings and search engines
 summary: Writing data to CSV file & applying regexp. 
@@ -26,9 +29,6 @@ image:
   focal_point: ''
   placement: 2
   preview_only: false
-
-authors:
-  - Evelien Willems and Frederik Heylen
 
 # tags:
 #  - Academic

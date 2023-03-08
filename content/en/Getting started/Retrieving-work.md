@@ -1,5 +1,6 @@
 ---
 title: Retrieving parliamentary work
+author: ["Evelien Willems", "Frederik Heylen"]
 
 # Summary for listings and search engines
 summary: MPs at work. 
@@ -26,9 +27,6 @@ image:
   focal_point: ''
   placement: 2
   preview_only: false
-
-authors:
-  - Evelien Willems and Frederik Heylen
 
 # tags:
 #  - Academic

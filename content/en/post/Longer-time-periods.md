@@ -1,5 +1,8 @@
 ---
 title: Extracting large amounts of data
+author: ["Niek Tettero"]
+featured_image: '/images/c_feature16.png'
+
 
 # Summary for listings and search engines
 summary: Extracting data covering multiple years 
@@ -26,9 +29,6 @@ image:
   focal_point: ''
   placement: 2
   preview_only: false
-
-authors:
-  - Niek Terrero
 
 # tags:
 #  - Academic
