@@ -5,7 +5,7 @@ description: "Interface to the API of the Flemish parliament"
 # 1. To ensure Netlify triggers a build on our exampleSite instance, we need to change a file in the exampleSite directory.
 theme_version: '2.8.2'
 cascade:
-  featured_image: '/images/banner3.png'
+  featured_image: '/images/banner3.jpg'
 ---
 
 We blog on the use of **flempar**, an R-package providing an interface with the API of the Flemish parliament to retrieve its data. 
