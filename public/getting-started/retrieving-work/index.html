@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Retrieving parliamentary work | flempar</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="MPs at work.">
+    <meta name="generator" content="Hugo 0.96.0" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+  
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="Retrieving parliamentary work" />
+<meta property="og:description" content="MPs at work." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.flempar.be/getting-started/retrieving-work/" /><meta property="article:section" content="Getting started" />
+<meta property="article:published_time" content="2022-09-23T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-09-25T00:00:00+00:00" /><meta property="og:site_name" content="flempar" />
+
+<meta itemprop="name" content="Retrieving parliamentary work">
+<meta itemprop="description" content="MPs at work."><meta itemprop="datePublished" content="2022-09-23T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2022-09-25T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1089">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Retrieving parliamentary work"/>
+<meta name="twitter:description" content="MPs at work."/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  <header class="cover bg-top" style="background-image: url('https://www.flempar.be/images/banner3.jpg');">
+    <div class="bg-black-30">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        flempar
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/documentation/" title="Documentation page">
+              Documentation
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/publications/" title="Publications page">
+              Publications
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/getting-started/" title="Getting started page">
+              Getting started
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        
+          <div class="f2 f1-l fw2 white-90 mb0 lh-title">Retrieving parliamentary work</div>
+          
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        GETTING STARTED
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Retrieving parliamentary work</h1>
+      
+      <p class="tracked">
+        By <strong>Evelien Willems, Frederik Heylen</strong>
+      </p>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-09-23T00:00:00Z">September 23, 2022</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><p>In this post we delve into the <code>get_work()</code> function and the  parameters you can specify to query for more specific information.</p>
+<h3 id="example-1---basic-functionalities">Example 1 - Basic functionalities</h3>
+<p>First, we will query for all debates on current affairs (one possible type of parliamentary work - and the default option) organized in January-August 2022. We use the <code>get_work()</code> function. Indeed, in contrast to the <code>get_mp</code> function, you <em>always</em> need to specify a date range using the following arguments:</p>
+<ul>
+<li>date_range_from: the start date YYYY-MM-DD</li>
+<li>date_range_to: the end date YYYY-MM-DD</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>work_b &lt;- get_work(date_range_from=<span style="color:#0ff;font-weight:bold">&#34;2022-01-01&#34;</span>
+</span></span><span style="display:flex;"><span>                    , date_range_to=<span style="color:#0ff;font-weight:bold">&#34;2022-08-31&#34;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>work_b %&gt;%
+</span></span><span style="display:flex;"><span>  tibble() %&gt;%
+</span></span><span style="display:flex;"><span>  head(<span style="color:#ff0;font-weight:bold">10</span>) %&gt;% View
+</span></span></code></pre></div><p>As an enormous amount of data can be retrieved through the <code>get_work()</code> function, it is highly <strong>recommended to test your query on a limited date range</strong> before expanding the date range to comprise multiple months to years.</p>
+<p>Note also that we include a chunk of code that lets you inspect the first 10 observations in the data frame created. This allows you to get a feel of the data obtained before diving in deeper. This is how the resulting data frame looks like:</p>
+<figure><img src="/images/DefaultOutput_get_work.png"/><figcaption>
+            <h4>Default output `get_work()`</h4>
+        </figcaption>
+</figure>
+
+<p>Inspecting this data frame, shows you what the default parameters deliver. Namely, the &ldquo;details&rdquo; about &ldquo;debates&rdquo; in current affairs in &ldquo;plenary&rdquo; sessions for the &ldquo;dates&rdquo; specified. Though, much more is possible!</p>
+<p>The <code>get_work()</code> function has the following arguments:</p>
+<ul>
+<li>date_range_from: the start date YYYY-MM-DD</li>
+<li>date_range_to: the end date YYYY-MM-DD</li>
+<li>fact: options include &ldquo;written_questions&rdquo;, &ldquo;debates&rdquo;, &ldquo;oral_questions_and_interpellations&rdquo;, &ldquo;parliamentary_initiatives&rdquo;, and &ldquo;council_hearings&rdquo;</li>
+<li>type: options include &ldquo;details&rdquo;, &ldquo;speech&rdquo; and &ldquo;documents&rdquo;</li>
+<li>plen_comm: choose between plenary &ldquo;plen&rdquo; and commission &ldquo;comm&rdquo; sessions</li>
+<li>use_parallel: Boolean of which the default value is set to TRUE, select FALSE in case you do not have multiple workers to speed up the calls made</li>
+<li>raw: Boolean of which the default value is set to FALSE, select TRUE in case you wish to retrieve the unprocessed data</li>
+<li>extra_via_fact: Boolean of which the default value is set to FALSE, select TRUE in case you wish to retrieve the unique identifiers of documents outside the date range specified but linked to the &ldquo;fact&rdquo;</li>
+<li>two_columns_pdf: Boolean of which the default value is set to FALSE, select TRUE in case you encounter PDFs divided into two text columns. A standard method cannot deal with this, this method ensures that this is read correctly</li>
+</ul>
+<p>So let&rsquo;s, for instance, query for some specific type of parliamentary work conducted in 2021. Here, we opt to retrieve data about parliamentary initiatives (<code>fact=&quot;parliamentary_initiatives&quot;</code>) discussed in the plenary (<code>plen_comm=&quot;plen&quot;</code>) sessions (<code>date_range_from=&quot;2021-01-01&quot;</code>and <code>date_range_to=&quot;2021-12-31&quot;</code>). We also specify that we are interested in the <code>type=&quot;details&quot;</code> as this will deliver us a data frame containing the essentials about each parliamentary initiative.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>pi_work &lt;- get_work(date_range_from=<span style="color:#0ff;font-weight:bold">&#34;2021-01-01&#34;</span>
+</span></span><span style="display:flex;"><span>                    , date_range_to=<span style="color:#0ff;font-weight:bold">&#34;2021-12-31&#34;</span>
+</span></span><span style="display:flex;"><span>                    , fact=<span style="color:#0ff;font-weight:bold">&#34;parliamentary_initiatives&#34;</span>
+</span></span><span style="display:flex;"><span>                    , type=<span style="color:#0ff;font-weight:bold">&#34;details&#34;</span>
+</span></span><span style="display:flex;"><span>                    , plen_comm=<span style="color:#0ff;font-weight:bold">&#34;plen&#34;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>pi_work %&gt;%
+</span></span><span style="display:flex;"><span>  tibble() %&gt;%
+</span></span><span style="display:flex;"><span>  head(<span style="color:#ff0;font-weight:bold">10</span>) %&gt;% View
+</span></span></code></pre></div><p>Now we can inspect the data a bit more. Something you can check, for example, is which topics are covered in the parliamentary initiatives at that time. We use some <code>dplyr</code> code, in this case <code>count()</code> to quickly count the unique values in the column <code>result_thema_1</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>pi_work %&gt;% count(result_thema_1, sort = T) -&gt; work_topics
+</span></span><span style="display:flex;"><span>work_topics
+</span></span></code></pre></div><h3 id="example-2---retrieving-documents-related-to-parliamentary-work">Example 2 - Retrieving <em>documents</em> related to parliamentary work</h3>
+<p>Here, we opt to retrieve data about written questions (<code>fact=&quot;written questions&quot;</code>) issued in March 2022 (<code>date_range_from=&quot;2022-03-01&quot;</code>and <code>date_range_to=&quot;2022-03-31&quot;</code>). Importantly, we specify that we are interested in <code>type=&quot;document&quot;</code> as this will deliver us a data frame containing the documents related to each written question in the selection.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>wq_work_doc &lt;- get_work(date_range_from=<span style="color:#0ff;font-weight:bold">&#34;2022-03-01&#34;</span>
+</span></span><span style="display:flex;"><span>                    , date_range_to=<span style="color:#0ff;font-weight:bold">&#34;2022-03-31&#34;</span>
+</span></span><span style="display:flex;"><span>                    , fact=<span style="color:#0ff;font-weight:bold">&#34;written_questions&#34;</span>
+</span></span><span style="display:flex;"><span>                    , type=<span style="color:#0ff;font-weight:bold">&#34;document&#34;</span>)  
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>wq_work_doc %&gt;%
+</span></span><span style="display:flex;"><span>  tibble::tibble() %&gt;%
+</span></span><span style="display:flex;"><span>  head(<span style="color:#ff0;font-weight:bold">10</span>) %&gt;% View
+</span></span></code></pre></div><p>This call delivers you a data frame with (at least) the following columns:</p>
+<ul>
+<li>id_fact: unique identifier linking to the specific parliamentary activity the document is associated with (here, the written question)</li>
+<li>publicatiedatum: date the document was published</li>
+<li>text: each row in this column contains the text contained in the document</li>
+</ul>
+<p>The data frame can be manipulated further to make it ready for text analysis. First, matching the data frame with the <code>details</code> of its associated written questions is possible via <code>id_fact</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>wq_work &lt;- get_work(date_range_from=<span style="color:#0ff;font-weight:bold">&#34;2022-03-01&#34;</span>
+</span></span><span style="display:flex;"><span>                    , date_range_to=<span style="color:#0ff;font-weight:bold">&#34;2022-03-31&#34;</span>
+</span></span><span style="display:flex;"><span>                    , fact=<span style="color:#0ff;font-weight:bold">&#34;written_questions&#34;</span>
+</span></span><span style="display:flex;"><span>                    , type=<span style="color:#0ff;font-weight:bold">&#34;details&#34;</span>)  
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>wq_docs_details &lt;- left_join(wq_work, wq_work_doc, by=c(<span style="color:#0ff;font-weight:bold">&#34;id_fact&#34;</span>)) 
+</span></span></code></pre></div><p>Another element here is that we can <strong>search</strong> these documents for <strong>specific key words</strong> occurring in one of them. For this, we use the <code>search_terms()</code> function with the following arguments:</p>
+<ul>
+<li>text_field: fill in the column name of the text field in c(&ldquo;XXX&rdquo;), multiple columns can be specified at once as c(&ldquo;XXX&rdquo;, &ldquo;XXX&rdquo;, &hellip;)</li>
+<li>search_terms: fill in the term(s) you want the documents checked for</li>
+</ul>
+<p>Here, we opt to retrieve data about the PFOS/PFAS debate in Belgium (<code>search_terms = c(&quot;PFOS&quot;, &quot;PFAS&quot;)</code>).</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>wq_docs_details %&gt;%
+</span></span><span style="display:flex;"><span>  as_tibble() %&gt;%
+</span></span><span style="display:flex;"><span>  search_terms(text_field = c(<span style="color:#0ff;font-weight:bold">&#34;text&#34;</span>), search_terms = c(<span style="color:#0ff;font-weight:bold">&#34;PFOS&#34;</span>, <span style="color:#0ff;font-weight:bold">&#34;PFAS&#34;</span>)) -&gt; PFOS
+</span></span></code></pre></div><p>Note that to get a good feel of the data, it is often recommended to sort the data frame by <code>id_fact</code> (e.g. when retrieving documents about <code>fact=&quot;parliamentary_initiatives</code>, multiple documents are associated to one initiative). This thus gives you a clearer overview of all documents related to one unique &lsquo;activity&rsquo;.</p>
+<h3 id="example-3---retrieving-speech-related-to-parliamentary-work">Example 3 - Retrieving <em>speech</em> related to parliamentary work</h3>
+<p>For this example, we opt to retrieve data about oral questions and interpellations (<code>fact=&quot;oral_questions_and_interpellations&quot;</code>) discussed in the committee meetings (<code>plen_comm=&quot;comm&quot;</code>) of March 2022 (<code>date_range_from=&quot;2022-03-01&quot;</code>and <code>date_range_to=&quot;2022-03-31&quot;</code>). Next, we specify that we are interested in the <code>type=&quot;speech&quot;</code> as this will deliver us a data frame containing the &lsquo;speech&rsquo; or spoken word by MPs and ministers related to each oral question in the selection.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>oq_speech &lt;- get_work(date_range_from=<span style="color:#0ff;font-weight:bold">&#34;2022-03-01&#34;</span>
+</span></span><span style="display:flex;"><span>                    , date_range_to=<span style="color:#0ff;font-weight:bold">&#34;2022-03-31&#34;</span>
+</span></span><span style="display:flex;"><span>                    , fact=<span style="color:#0ff;font-weight:bold">&#34;oral_questions_and_interpellations&#34;</span>
+</span></span><span style="display:flex;"><span>                    , type=<span style="color:#0ff;font-weight:bold">&#34;speech&#34;</span>
+</span></span><span style="display:flex;"><span>                    , plen_comm=<span style="color:#0ff;font-weight:bold">&#34;comm&#34;</span>) 
+</span></span></code></pre></div><p>This call delivers you a data frame with the following columns:</p>
+<ul>
+<li>journaallijn_id: the unique identifier for each action-reaction sequence related to the same oral question.</li>
+<li>text: each row in this column contains the &lsquo;speech&rsquo; per individual speaker.</li>
+<li>sprekertitel: identifies who is speaking.</li>
+<li>persoon_id: the unique identifier for each individual.</li>
+<li>id_fact: unique identifier linking to the specific parliamentary activity the speech is associated with (here, oral questions and interpellations).</li>
+</ul>
+<p>Matching this data frame with the <code>details</code> of these oral questions is possible via the <code>journaallijn_id</code>. First, we get the details of the oral questions and interpellations.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>oq_details &lt;- get_work(date_range_from=<span style="color:#0ff;font-weight:bold">&#34;2022-03-01&#34;</span>
+</span></span><span style="display:flex;"><span>                    , date_range_to=<span style="color:#0ff;font-weight:bold">&#34;2022-03-31&#34;</span>
+</span></span><span style="display:flex;"><span>                    , fact=<span style="color:#0ff;font-weight:bold">&#34;oral_questions_and_interpellations&#34;</span>
+</span></span><span style="display:flex;"><span>                    , type=<span style="color:#0ff;font-weight:bold">&#34;details&#34;</span>
+</span></span><span style="display:flex;"><span>                    , plen_comm=<span style="color:#0ff;font-weight:bold">&#34;comm&#34;</span>) 
+</span></span></code></pre></div><p>Now we are ready to join the <code>oq_speech</code>data frame with the <code>oq_details</code> data frame containing the &lsquo;speech&rsquo; per oral question. We do this based on a combination of two unique identifiers: <code>id_fact</code> and <code>journaallijn_id</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>questions_speech &lt;- left_join(oq_speech, oq_details, by=c(<span style="color:#0ff;font-weight:bold">&#34;id_fact&#34;</span>, <span style="color:#0ff;font-weight:bold">&#34;journaallijn_id&#34;</span>)) 
+</span></span></code></pre></div><p>Finally, we can also <strong>search</strong> these spoken words for <strong>specific key words</strong> occurring. We again use the <code>search_terms()</code> function. We opt to retrieve data about the PFOS/PFAS debate in Belgium (<code>search_terms = c(&quot;PFOS&quot;, &quot;PFAS&quot;)</code>).</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>questions_speech %&gt;%
+</span></span><span style="display:flex;"><span>  as_tibble() %&gt;%
+</span></span><span style="display:flex;"><span>  search_terms(text_field = c(<span style="color:#0ff;font-weight:bold">&#34;text&#34;</span>), search_terms = c(<span style="color:#0ff;font-weight:bold">&#34;PFOS&#34;</span>, <span style="color:#0ff;font-weight:bold">&#34;PFAS&#34;</span>)) -&gt; PFAS_oq
+</span></span></code></pre></div><ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-white bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://www.flempar.be/" >
+    &copy;  flempar 2023 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

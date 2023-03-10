@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on flempar</title>
+    <link>https://www.flempar.be/post/</link>
+    <description>Recent content in Posts on flempar</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 02 Mar 2017 12:00:00 -0500</lastBuildDate><atom:link href="https://www.flempar.be/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Extracting large amounts of data</title>
+      <link>https://www.flempar.be/post/longer-time-periods/</link>
+      <pubDate>Tue, 07 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/post/longer-time-periods/</guid>
+      <description>Extracting data covering multiple years</description>
+    </item>
+    
+    <item>
+      <title>Working with nested data</title>
+      <link>https://www.flempar.be/post/nested-data/</link>
+      <pubDate>Mon, 30 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/post/nested-data/</guid>
+      <description>How to extract data nested in lists in lists.</description>
+    </item>
+    
+    <item>
+      <title>Some nice extra&#39;s</title>
+      <link>https://www.flempar.be/post/nice-extra/</link>
+      <pubDate>Mon, 26 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/post/nice-extra/</guid>
+      <description>Writing data to CSV file &amp;amp; applying regexp.</description>
+    </item>
+    
+    <item>
+      <title>Retrieving parliamentary work</title>
+      <link>https://www.flempar.be/post/retrieving-work/</link>
+      <pubDate>Sun, 25 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/post/retrieving-work/</guid>
+      <description>MPs at work.</description>
+    </item>
+    
+    <item>
+      <title>Retrieving members of parliament</title>
+      <link>https://www.flempar.be/post/retrieving-mps/</link>
+      <pubDate>Sat, 24 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/post/retrieving-mps/</guid>
+      <description>Who are the MPs?</description>
+    </item>
+    
+    <item>
+      <title>Getting started with flempar</title>
+      <link>https://www.flempar.be/post/getting-started/</link>
+      <pubDate>Wed, 07 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/post/getting-started/</guid>
+      <description>Your gateway to the Flemish parliament data</description>
+    </item>
+    
+  </channel>
+</rss>

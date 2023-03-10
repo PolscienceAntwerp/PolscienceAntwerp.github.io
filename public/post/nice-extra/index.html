@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Some nice extra&#39;s | flempar</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Writing data to CSV file &amp; applying regexp.">
+    <meta name="generator" content="Hugo 0.96.0" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+  
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="Some nice extra&#39;s" />
+<meta property="og:description" content="Writing data to CSV file &amp; applying regexp." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.flempar.be/post/nice-extra/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-09-26T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-09-26T00:00:00+00:00" /><meta property="og:site_name" content="flempar" />
+
+<meta itemprop="name" content="Some nice extra&#39;s">
+<meta itemprop="description" content="Writing data to CSV file &amp; applying regexp."><meta itemprop="datePublished" content="2022-09-26T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2022-09-26T00:00:00+00:00" />
+<meta itemprop="wordCount" content="321">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Some nice extra&#39;s"/>
+<meta name="twitter:description" content="Writing data to CSV file &amp; applying regexp."/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  <header class="cover bg-top" style="background-image: url('https://www.flempar.be/images/c_feature13.png');">
+    <div class="bg-black-30">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        flempar
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/documentation/" title="Documentation page">
+              Documentation
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/publications/" title="Publications page">
+              Publications
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/getting-started/" title="Getting started page">
+              Getting started
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        
+          <div class="f2 f1-l fw2 white-90 mb0 lh-title">Some nice extra&#39;s</div>
+          
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Some nice extra&#39;s</h1>
+      
+      <p class="tracked">
+        By <strong>Evelien Willems, Frederik Heylen</strong>
+      </p>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-09-26T00:00:00Z">September 26, 2022</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="writing-your-data-to-a-csv-file">Writing your data to a CSV file</h2>
+<p>In many cases, it might be useful to write the resulting data frame (here named <code>result</code>, but can be any name of your choosing) to a CSV file. Here&rsquo;s the code to do so, making use of the <code>write.csv2()</code> function. Note that we included a line on how to drop columns containing data in <em>list</em> format, a format a CSV file cannot handle. Careful inspection of your data and its formats is therefore always necessary!</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>result %&gt;%
+</span></span><span style="display:flex;"><span>     select_if(Negate(is.list)) %&gt;%
+</span></span><span style="display:flex;"><span>     write.csv2(<span style="color:#0ff;font-weight:bold">&#34;result.csv&#34;</span>, row.names=<span style="color:#fff;font-weight:bold">FALSE</span>)
+</span></span></code></pre></div><p>The CSV file can now be found in your local folder.</p>
+<h2 id="applying-regexp-to-detect-patterns-in-text">Applying <em>regexp</em> to detect patterns in text</h2>
+<p>Given the large bulks of text that can be gathered through the <code>get_work()</code> function, it might come in handy to structure this text a bit and apply <em>regexp</em> to detect patterns in the text, for instance, split up some text in multiple columns.</p>
+<p>To illustrate this, we first query for a set of written questions (via <code>get_work()</code>, specifying <code>fact=&quot;written_questions&quot;</code> and <code>type=&quot;document&quot;</code>). These questions have a distinct structure: they are composed of a &lsquo;question&rsquo; by an MP and an &lsquo;answer&rsquo; by a minister. So let&rsquo;s ensure that &lsquo;question&rsquo; and &lsquo;answer&rsquo; are stored in separate columns instead of being one big bulk of text. To do so, we use <code>mutate</code> from <code>dplyr</code> to create the extra columns and we extract the <em>strings</em> via <code>str_extract</code> from <code>stringr</code> (more info <a href="https://stringr.tidyverse.org/">here</a>).</p>
+<p>Note that this procedure entirely relies on identifying the <em>string</em> or sequence of words that marks the distinctive parts of a text. In our case, we identify &lsquo;ANTWOORD op vraag&rsquo; (or: <em>ANSWER to question</em>) as introducing the distinction between the &lsquo;question&rsquo; and &lsquo;answer&rsquo; parts of the written question.</p>
+<p>Finally, note that we use <em>regexp</em>. You can look up all possibilities <a href="https://stringr.tidyverse.org/articles/regular-expressions.html">here</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>written_questions &lt;- get_work(date_range_from=<span style="color:#0ff;font-weight:bold">&#34;2022-02-15&#34;</span>
+</span></span><span style="display:flex;"><span>                       , date_range_to=<span style="color:#0ff;font-weight:bold">&#34;2022-02-20&#34;</span>
+</span></span><span style="display:flex;"><span>                       , fact=<span style="color:#0ff;font-weight:bold">&#34;written_questions&#34;</span>
+</span></span><span style="display:flex;"><span>                       , type=<span style="color:#0ff;font-weight:bold">&#34;document&#34;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>written_questions %&gt;%
+</span></span><span style="display:flex;"><span>      mutate(vraag= str_extract(text, <span style="color:#0ff;font-weight:bold">&#34;.*(?&lt;=ANTWOORD op )&#34;</span>)) %&gt;%
+</span></span><span style="display:flex;"><span>      mutate(antwoord= str_extract(text, <span style="color:#0ff;font-weight:bold">&#34;(?&lt;=ANTWOORD op ).*&#34;</span>) ) %&gt;%
+</span></span><span style="display:flex;"><span>      write.csv2(<span style="color:#0ff;font-weight:bold">&#34;written_questions.csv&#34;</span>,row.names = <span style="color:#fff;font-weight:bold">FALSE</span>)
+</span></span></code></pre></div><ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-white bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://www.flempar.be/" >
+    &copy;  flempar 2023 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Retrieving members of parliament | flempar</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Who are the MPs?">
+    <meta name="generator" content="Hugo 0.96.0" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+  
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="Retrieving members of parliament" />
+<meta property="og:description" content="Who are the MPs?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.flempar.be/post/retrieving-mps/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-09-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-09-24T00:00:00+00:00" /><meta property="og:site_name" content="flempar" />
+
+<meta itemprop="name" content="Retrieving members of parliament">
+<meta itemprop="description" content="Who are the MPs?"><meta itemprop="datePublished" content="2022-09-24T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2022-09-24T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1666">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Retrieving members of parliament"/>
+<meta name="twitter:description" content="Who are the MPs?"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  <header class="cover bg-top" style="background-image: url('https://www.flempar.be/images/c_feature14.png');">
+    <div class="bg-black-30">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        flempar
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/documentation/" title="Documentation page">
+              Documentation
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/publications/" title="Publications page">
+              Publications
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/getting-started/" title="Getting started page">
+              Getting started
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        
+          <div class="f2 f1-l fw2 white-90 mb0 lh-title">Retrieving members of parliament</div>
+          
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Retrieving members of parliament</h1>
+      
+      <p class="tracked">
+        By <strong>Evelien Willems, Frederik Heylen</strong>
+      </p>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-09-24T00:00:00Z">September 24, 2022</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><p>In this post we delve into the <code>get_mp()</code> function and the  parameters you can specify to query for more specific information.
+The <code>get_mp()</code> function has the following arguments:</p>
+<ul>
+<li>selection: options are &ldquo;current&rdquo;, &ldquo;former&rdquo; or &ldquo;date&rdquo;
+<ul>
+<li>when selecting &ldquo;date&rdquo;, &ldquo;date_at&rdquo; should be added as &ldquo;YYYY-MM-DD&rdquo;</li>
+</ul>
+</li>
+<li>fact: options are &ldquo;bio&rdquo;, &ldquo;career&rdquo;, &ldquo;education&rdquo;, &ldquo;presences_commissions&rdquo;, &ldquo;presences_plenary&rdquo;, &ldquo;political_info&rdquo;, and &ldquo;raw&rdquo;</li>
+<li>use_parallel: Boolean of which the default value is set to TRUE, select FALSE in case you do not have multiple workers to speed up the calls made</li>
+</ul>
+<p>To retrieve the demographics of the MPs currently in parliament (same as default), we specify the following: <code>selection=&quot;current&quot;</code> and <code>fact=&quot;bio&quot;</code>. Note that you can each time store the data frame in your R-environment by including the following <code>&lt;- name data frame</code>. This has the benefit of storing the data in a table containing rows and columns that you can use for further data manipulation and analysis.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>mp_bio &lt;- get_mp(selection=<span style="color:#0ff;font-weight:bold">&#34;current&#34;</span>
+</span></span><span style="display:flex;"><span>                , fact=<span style="color:#0ff;font-weight:bold">&#34;bio&#34;</span>) 
+</span></span><span style="display:flex;"><span>mp_bio
+</span></span></code></pre></div><p>The result of our query is a data frame with 124 observations, the exact number of MPs currently in office, and their demographics. You will see that the data frame is successfully stored under the tab &lsquo;Environment&rsquo;. This is how the data frame looks like:</p>
+<figure><img src="/images/DefaultOutput_get_mp.png"/><figcaption>
+            <h4>Default output `get_mp()`</h4>
+        </figcaption>
+</figure>
+
+<p>You can, for instance, check the distribution of men and women in parliament. We make use of the pipe operator <code>%&gt;%</code> (which lets you pass an interim result onto the next function) and the data manipulation options from the <code>dplyr</code> package. To count observations by group, we use <code>group_by()</code> and <code>tally()</code>. You can find more information on how to use <code>dplyr</code> <a href="https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html">here</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>mp_bio %&gt;%
+</span></span><span style="display:flex;"><span>  group_by(geslacht) %&gt;%
+</span></span><span style="display:flex;"><span>  tally()
+</span></span></code></pre></div><h3 id="example-2---extracting-demographics-at-specific-dates">Example 2 - Extracting demographics at specific dates</h3>
+<p>So let&rsquo;s take this a step further and analyze whether the number of women in parliament has grown throughout the years. To do so, we will extract the demographics of MPs from <strong>past legislatures</strong> (from 1995 onwards). We make use of the <code>get_legislatures()</code> function to identify the starting dates of each legislature.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>get_legislatures()
+</span></span></code></pre></div><p>Next, we specify the exact date from which we wish to collect the MPs&rsquo; demographics. Here, we opt for 01/12 of the starting year of each legislature, to make sure all MPs are sworn in. Instead of <code>selection=&quot;current&quot;</code>, we now fill in <code>selection=&quot;date&quot;</code>and add the <code>date_at=&quot;YYYY-MM-DD&quot;</code> argument in the the <code>get_mp()</code> function.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>mp_bio_1995 &lt;- get_mp(selection=<span style="color:#0ff;font-weight:bold">&#34;date&#34;</span>, fact=<span style="color:#0ff;font-weight:bold">&#34;bio&#34;</span>, date_at =<span style="color:#0ff;font-weight:bold">&#34;1995-12-01&#34;</span>)
+</span></span><span style="display:flex;"><span>mp_bio_1999 &lt;- get_mp(selection=<span style="color:#0ff;font-weight:bold">&#34;date&#34;</span>, fact=<span style="color:#0ff;font-weight:bold">&#34;bio&#34;</span>, date_at =<span style="color:#0ff;font-weight:bold">&#34;1999-12-01&#34;</span>)
+</span></span><span style="display:flex;"><span>mp_bio_2004 &lt;- get_mp(selection=<span style="color:#0ff;font-weight:bold">&#34;date&#34;</span>, fact=<span style="color:#0ff;font-weight:bold">&#34;bio&#34;</span>, date_at =<span style="color:#0ff;font-weight:bold">&#34;2004-12-01&#34;</span>)
+</span></span><span style="display:flex;"><span>mp_bio_2009 &lt;- get_mp(selection=<span style="color:#0ff;font-weight:bold">&#34;date&#34;</span>, fact=<span style="color:#0ff;font-weight:bold">&#34;bio&#34;</span>, date_at =<span style="color:#0ff;font-weight:bold">&#34;2009-12-01&#34;</span>)
+</span></span><span style="display:flex;"><span>mp_bio_2014 &lt;- get_mp(selection=<span style="color:#0ff;font-weight:bold">&#34;date&#34;</span>, fact=<span style="color:#0ff;font-weight:bold">&#34;bio&#34;</span>, date_at =<span style="color:#0ff;font-weight:bold">&#34;2014-12-01&#34;</span>)
+</span></span><span style="display:flex;"><span>mp_bio_2019 &lt;- get_mp(selection=<span style="color:#0ff;font-weight:bold">&#34;date&#34;</span>, fact=<span style="color:#0ff;font-weight:bold">&#34;bio&#34;</span>, date_at =<span style="color:#0ff;font-weight:bold">&#34;2019-12-01&#34;</span>)
+</span></span></code></pre></div><p>Now, we will select the relevant columns to answer our question and add a column for year. We again make use of the pipe operator (which lets you pass an interim result onto the next function) and the data manipulation options from the <code>dplyr</code> package (here: <code>select()</code> and <code>add_column()</code>).</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>mp_bio_1995 %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_mp, geslacht) %&gt;% add_column(year = <span style="color:#ff0;font-weight:bold">1995</span>) -&gt; mp_bio_1995
+</span></span><span style="display:flex;"><span>mp_bio_1999 %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_mp, geslacht) %&gt;% add_column(year = <span style="color:#ff0;font-weight:bold">1999</span>) -&gt; mp_bio_1999
+</span></span><span style="display:flex;"><span>mp_bio_2004 %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_mp, geslacht) %&gt;% add_column(year = <span style="color:#ff0;font-weight:bold">2004</span>) -&gt; mp_bio_2004
+</span></span><span style="display:flex;"><span>mp_bio_2009 %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_mp, geslacht) %&gt;% add_column(year = <span style="color:#ff0;font-weight:bold">2009</span>) -&gt; mp_bio_2009
+</span></span><span style="display:flex;"><span>mp_bio_2014 %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_mp, geslacht) %&gt;% add_column(year = <span style="color:#ff0;font-weight:bold">2014</span>) -&gt; mp_bio_2014
+</span></span><span style="display:flex;"><span>mp_bio_2019 %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_mp, geslacht) %&gt;% add_column(year = <span style="color:#ff0;font-weight:bold">2019</span>) -&gt; mp_bio_2019
+</span></span></code></pre></div><p>Finally, we combine these data frames into a single data frame, making use of <code>rbind()</code>. This function allows to join data frames vertically, in other words, the data frames get pasted below each other.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>mp_pastlegis &lt;- rbind(mp_bio_1995, mp_bio_1999, mp_bio_2004, mp_bio_2009, mp_bio_2014, mp_bio_2019) 
+</span></span><span style="display:flex;"><span>mp_pastlegis
+</span></span></code></pre></div><p>This data frame then allows us to answer our research question. Has the number of women MPs grown throughout the years? We opt to plot the results in a histogram, making use of the <code>ggplot</code> package. A good place to start learning about ggplot is <a href="https://ggplot2-book.org/">here</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>plot1 &lt;- ggplot(mp_pastlegis, aes(x = year, fill= geslacht, colour = geslacht), bins = <span style="color:#ff0;font-weight:bold">12</span>) + 
+</span></span><span style="display:flex;"><span>                geom_histogram(binwidth=<span style="color:#ff0;font-weight:bold">1.5</span>, position = <span style="color:#0ff;font-weight:bold">&#34;dodge&#34;</span>) +
+</span></span><span style="display:flex;"><span>                labs(x=<span style="color:#0ff;font-weight:bold">&#34;Year&#34;</span>, y = <span style="color:#0ff;font-weight:bold">&#34;Count&#34;</span>) + 
+</span></span><span style="display:flex;"><span>                scale_x_continuous(breaks = c(<span style="color:#ff0;font-weight:bold">1995</span>, <span style="color:#ff0;font-weight:bold">1999</span>, <span style="color:#ff0;font-weight:bold">2004</span>, <span style="color:#ff0;font-weight:bold">2009</span>, <span style="color:#ff0;font-weight:bold">2014</span>, <span style="color:#ff0;font-weight:bold">2019</span>)) +
+</span></span><span style="display:flex;"><span>                theme_classic() 
+</span></span><span style="display:flex;"><span>plot1
+</span></span></code></pre></div><figure><img src="/images/plot1.png"/>
+</figure>
+
+<h4 id="quick-elaboration-advanced">Quick elaboration (advanced)</h4>
+<p>Above, we present some very elaborate code, but with the advantage of simplicity to intuitively understand it. Here, we do it in a shorter, elegant, but more complex way.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>library(lubridate)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>leg &lt;- get_legislatures() %&gt;%
+</span></span><span style="display:flex;"><span>  filter(start &gt;= ymd_hms(<span style="color:#0ff;font-weight:bold">&#34;1995-06-12 22:00:00&#34;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>list &lt;- vector(mode=<span style="color:#0ff;font-weight:bold">&#34;list&#34;</span>, length=length(leg))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>for(i in <span style="color:#ff0;font-weight:bold">1</span>:nrow(leg)){
+</span></span><span style="display:flex;"><span> list[[i]]&lt;- get_mp(selection=<span style="color:#0ff;font-weight:bold">&#34;date&#34;</span>, fact=<span style="color:#0ff;font-weight:bold">&#34;bio&#34;</span>, date_at = date(leg$start[[i]]) + months(<span style="color:#ff0;font-weight:bold">6</span>), use_parallel=<span style="color:#fff;font-weight:bold">TRUE</span>) 
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mp_pastlegis_2 &lt;- data.table::rbindlist(list, fill=<span style="color:#fff;font-weight:bold">TRUE</span>)
+</span></span></code></pre></div><p>Comparing the <code>mp_pastlegis</code> and the <code>mp_pastlegis_2</code> data frames, you will notice that they contain the exact same number of observations.</p>
+<h3 id="example-3---combining-demographics-bio-with-political-information">Example 3 - Combining demographics (bio) with political information</h3>
+<p>We first collect the political information about the MPs currently in office. Instead of <code>fact=&quot;bio&quot;</code>, you use <code>fact=&quot;political_info&quot;</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>mp_polinfo &lt;- get_mp(selection=<span style="color:#0ff;font-weight:bold">&#34;current&#34;</span>, fact=<span style="color:#0ff;font-weight:bold">&#34;political_info&#34;</span>) 
+</span></span><span style="display:flex;"><span>mp_polinfo
+</span></span></code></pre></div><p>Normally, <code>mp_bio</code> is still saved in your R-environment. If not, rerun the above line of code with <code>fact=&quot;bio&quot;</code> and store the data frame. Next, we will combine the <code>mp_bio</code> with the <code>mp_polinfo</code> data frame, by using <code>left_join()</code>. In most cases, you join two data frames horizontally (in other words, pasting them next to each other) by one or more common unique identifiers. In our case, these identifiers are <code>id_mp</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>mp_bio %&gt;%
+</span></span><span style="display:flex;"><span>  left_join(mp_polinfo, by=c(<span style="color:#0ff;font-weight:bold">&#34;id_mp&#34;</span>=<span style="color:#0ff;font-weight:bold">&#34;id_mp&#34;</span>)) -&gt; mp_bio_polinfo 
+</span></span></code></pre></div><p>Again, we can answer some fun research questions with these data. For instance, is the share of women and men equal across electoral districts? We can create a plot to visualize the results.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>plot2 &lt;- ggplot(mp_bio_polinfo, aes(x = kieskring, fill= geslacht, colour = geslacht), bins = <span style="color:#ff0;font-weight:bold">12</span>) + 
+</span></span><span style="display:flex;"><span>  geom_bar(position = <span style="color:#0ff;font-weight:bold">&#34;fill&#34;</span>) +
+</span></span><span style="display:flex;"><span>  labs(x=<span style="color:#0ff;font-weight:bold">&#34;Electoral district&#34;</span>, y = <span style="color:#0ff;font-weight:bold">&#34;Percentage&#34;</span>) + 
+</span></span><span style="display:flex;"><span>  theme_classic() +
+</span></span><span style="display:flex;"><span>  theme(axis.text.x = element_text(angle = <span style="color:#ff0;font-weight:bold">90</span>)) +
+</span></span><span style="display:flex;"><span>  geom_hline(yintercept=<span style="color:#ff0;font-weight:bold">0.50</span>, linetype=<span style="color:#0ff;font-weight:bold">&#34;dashed&#34;</span>, 
+</span></span><span style="display:flex;"><span>             color = <span style="color:#0ff;font-weight:bold">&#34;black&#34;</span>, linewidth=<span style="color:#ff0;font-weight:bold">1</span>)
+</span></span><span style="display:flex;"><span>plot2
+</span></span></code></pre></div><figure><img src="/images/plot2.png"/>
+</figure>
+
+<h3 id="example-4---advanced-extra-unnesting-of-lists">Example 4 - ADVANCED: Extra unnesting of lists</h3>
+<p>The breadth of data available through the API is truly impressive. This also entails that we opted to return some data as <strong>nested lists</strong> (list of lists) storing multiple types of values. Yet, we are here to extract those values from these nested lists and construct a data frame ready for analysis. A great resource to learn about (un)nesting is <a href="https://tidyr.tidyverse.org/articles/rectangle.html">here</a>.</p>
+<p>For this example, we analyze MPs accumulation of local political mandates. To obtain information about this, we start from the data frame <code>mp_polinfo</code> for which you filled in <code>fact=&quot;political_info&quot;</code> in the <code>get_mp()</code> function. Next, we will <em>unnest</em> the column <code>mandaat-andere</code> containing the info about MPs other mandates. To do so, we use <code>select()</code> to only keep those variables/columns of interest and use <code>unnest()</code> to dig up information from the nested columns.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>mp_polinfo %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_mp, naam, voornaam, mandaat_andere) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest(mandaat_andere) -&gt; cumul
+</span></span><span style="display:flex;"><span>cumul
+</span></span></code></pre></div><p>The data frame <code>cumul</code> now includes two new columns <code>mandaatgroepnaam</code> and <code>parlmandaat</code>. The latter column again being nested. So we still do not know the type of political mandate MPs hold at the local level. Are they a mayor, alder person or council member? To find out, we first filter out the local mandates using <code>filter()</code> on the column <code>mandaatgroepnaam</code> and then <code>unnest()</code>the column <code>parlmandaat</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>cumul %&gt;%
+</span></span><span style="display:flex;"><span>  filter(mandaatgroepnaam == <span style="color:#0ff;font-weight:bold">&#34;Lokale mandaten&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest(parlmandaat) -&gt; cumul_local
+</span></span><span style="display:flex;"><span>cumul_local
+</span></span></code></pre></div><p>Next, we filter out the mandates MPs currently hold, leaving out former local functions by dropping all observations for which an end date (<code>datumtot</code>) is registered. Additionally, we also drop all other non-relevant columns using <code>select()</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>cumul_local %&gt;%
+</span></span><span style="display:flex;"><span>  filter(is.na(datumtot)) %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_mp, naam, voornaam, datumvan, mandaat) -&gt; local_mand
+</span></span><span style="display:flex;"><span>local_mand
+</span></span></code></pre></div><p>Finally, we create a new column in the data frame to register whether an MP holds a local function as mayor, alder person or council member. The column <code>mandaat</code> holds text (string values), we therefore recode this text into a new categorical numerical variable via an <code>ifelse</code> statement. To do so, we make use of the <code>%like%</code> operator to search through the text and identify who holds what local function.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>local_mand$local_m &lt;- ifelse(local_mand$mandaat %like% <span style="color:#0ff;font-weight:bold">&#34;burgemeester&#34;</span>, <span style="color:#ff0;font-weight:bold">1</span>, 
+</span></span><span style="display:flex;"><span>                                    ifelse(local_mand$mandaat %like% <span style="color:#0ff;font-weight:bold">&#34;schepen&#34;</span>, <span style="color:#ff0;font-weight:bold">2</span>, 
+</span></span><span style="display:flex;"><span>                                           ifelse(local_mand$mandaat %like% <span style="color:#0ff;font-weight:bold">&#34;gemeenteraadslid&#34;</span>, <span style="color:#ff0;font-weight:bold">3</span>, <span style="color:#ff0;font-weight:bold">4</span>)))
+</span></span></code></pre></div><p>Let&rsquo;s count how many MPs hold a local mandate.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>n_distinct(local_mand$id_mp)
+</span></span></code></pre></div><p>To visualize results, we make a plot.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>plot3 &lt;- ggplot(local_mand, aes(x = as.factor(local_m))) + 
+</span></span><span style="display:flex;"><span>  geom_bar(stat=<span style="color:#0ff;font-weight:bold">&#34;count&#34;</span>, fill=<span style="color:#0ff;font-weight:bold">&#34;lightgreen&#34;</span>) +
+</span></span><span style="display:flex;"><span>  geom_text(stat=<span style="color:#0ff;font-weight:bold">&#39;count&#39;</span>, aes(label=after_stat(count)), vjust=<span style="color:#ff0;font-weight:bold">-1</span>) +
+</span></span><span style="display:flex;"><span>  labs(x=<span style="color:#0ff;font-weight:bold">&#34;Type of local mandate&#34;</span>, y = <span style="color:#0ff;font-weight:bold">&#34;Count&#34;</span>) +
+</span></span><span style="display:flex;"><span>  theme_classic() + 
+</span></span><span style="display:flex;"><span>  scale_x_discrete(labels=c(<span style="color:#0ff;font-weight:bold">&#34;1&#34;</span> = <span style="color:#0ff;font-weight:bold">&#34;Mayor&#34;</span>,<span style="color:#0ff;font-weight:bold">&#34;2&#34;</span> = <span style="color:#0ff;font-weight:bold">&#34;Alder&#34;</span>,<span style="color:#0ff;font-weight:bold">&#34;3&#34;</span> = <span style="color:#0ff;font-weight:bold">&#34;Council&#34;</span>, <span style="color:#0ff;font-weight:bold">&#34;4&#34;</span> = <span style="color:#0ff;font-weight:bold">&#34;Other&#34;</span>)) 
+</span></span><span style="display:flex;"><span>plot3
+</span></span></code></pre></div><figure><img src="/images/plot3.png"/>
+</figure>
+
+<h4 id="quick-elaboration">Quick elaboration</h4>
+<p>And we can again join this data frame with another data frame. For example, to answer the following question: <em>Are mayors more frequently absent in parliament than other MPs?</em>, we need to extract additional data about MPs presences in parliament (here: commissions). This can be done through filling in <code>fact=&quot;presences_commissions&quot;</code> in the <code>get_mp()</code> function. Alternatively, you can choose to look at MPs presences in plenary sessions via <code>fact=&quot;presences_plenary&quot;</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>mp_commissions &lt;- get_mp(selection=<span style="color:#0ff;font-weight:bold">&#34;current&#34;</span>, fact=<span style="color:#0ff;font-weight:bold">&#34;presences_commissions&#34;</span>)
+</span></span></code></pre></div><p>We can then quickly explore these data to see which MPs are most often present/absent in the parliamentary committee sessions of which they are an <em>effective</em> member. We opted to focus on the top 10 most present/absent MPs (<code>top_n(#, name column)</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>mp_commissions %&gt;% select(id_mp, naam, voornaam, commissie_afkorting, commissie_id, `vast-lid-aanwezigheid_aanwezig`) %&gt;% top_n(<span style="color:#ff0;font-weight:bold">10</span>, `vast-lid-aanwezigheid_aanwezig`) <span style="color:#007f7f">#present</span>
+</span></span><span style="display:flex;"><span>mp_commissions %&gt;% select(id_mp, naam, voornaam, commissie_afkorting, commissie_id, `vast-lid-aanwezigheid_afwezig`) %&gt;% top_n(<span style="color:#ff0;font-weight:bold">10</span>, `vast-lid-aanwezigheid_afwezig`) <span style="color:#007f7f">#absent</span>
+</span></span></code></pre></div><p>To answer the question, we first select the relevant columns and then join the <code>mp_commissions</code> data frame with the <code>local_mand</code> data frame. We also exclude those observations that are not an effective member of a certain commission and therefore got assigned <code>NA</code> when registering their commission presences.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>local_mand %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_mp, local_m) -&gt; local_mand2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mp_commissions %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_mp, voornaam, naam, commissie_afkorting, commissie_id, `vast-lid-aanwezigheid_aanwezig`, `vast-lid-aanwezigheid_afwezig`, `vast-lid-aanwezigheid_verontschuldigd`) -&gt; mp_commissions
+</span></span></code></pre></div><p>Next, we implement a <code>full_join</code> of both the <code>local_mand2</code> data frame and the <code>mp_commissions</code> data frame. Additionally, we assign the value &lsquo;0&rsquo; to MPs holding no local mandate.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>mp_m_comm &lt;- full_join(local_mand2, mp_commissions, by=c(<span style="color:#0ff;font-weight:bold">&#34;id_mp&#34;</span> = <span style="color:#0ff;font-weight:bold">&#34;id_mp&#34;</span>)) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mp_m_comm$local_m &lt;- ifelse(is.na(mp_m_comm$local_m), <span style="color:#ff0;font-weight:bold">0</span>, mp_m_comm$local_m)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>mp_m_comm %&gt;% 
+</span></span><span style="display:flex;"><span>  filter(!is.na(`vast-lid-aanwezigheid_afwezig`) &amp; !is.na(`vast-lid-aanwezigheid_aanwezig`) &amp; !is.na(`vast-lid-aanwezigheid_verontschuldigd`)) -&gt; mp_m_comm_omit
+</span></span></code></pre></div><p>Finally, we can visualize the results and conclude that mayors are not significantly more absent in commission sessions than other MPs. The data thus refutes the often heard claim that combining a local political mandate with a mandate in the Flemish parliament hampers parliamentary work.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>plot4 &lt;- ggplot(mp_m_comm_omit, aes(x=factor(local_m), y=`vast-lid-aanwezigheid_afwezig`, group=factor(local_m), fill=factor(local_m))) + 
+</span></span><span style="display:flex;"><span>  geom_boxplot(outlier.colour=<span style="color:#0ff;font-weight:bold">&#34;red&#34;</span>, outlier.shape=<span style="color:#ff0;font-weight:bold">8</span>, outlier.size=<span style="color:#ff0;font-weight:bold">4</span>) +
+</span></span><span style="display:flex;"><span>  labs(x=<span style="color:#0ff;font-weight:bold">&#34;Type of local mandate&#34;</span>, y = <span style="color:#0ff;font-weight:bold">&#34;Absences in committee meetings&#34;</span>) +
+</span></span><span style="display:flex;"><span>  theme_classic() +
+</span></span><span style="display:flex;"><span>  scale_x_discrete(labels=c(<span style="color:#0ff;font-weight:bold">&#34;0&#34;</span> = <span style="color:#0ff;font-weight:bold">&#34;None&#34;</span>,<span style="color:#0ff;font-weight:bold">&#34;1&#34;</span> = <span style="color:#0ff;font-weight:bold">&#34;Mayor&#34;</span>,<span style="color:#0ff;font-weight:bold">&#34;2&#34;</span> = <span style="color:#0ff;font-weight:bold">&#34;Alder&#34;</span>,<span style="color:#0ff;font-weight:bold">&#34;3&#34;</span> = <span style="color:#0ff;font-weight:bold">&#34;Council&#34;</span>, <span style="color:#0ff;font-weight:bold">&#34;4&#34;</span> = <span style="color:#0ff;font-weight:bold">&#34;Other&#34;</span>)) + 
+</span></span><span style="display:flex;"><span>  theme(legend.position = <span style="color:#0ff;font-weight:bold">&#34;none&#34;</span>)
+</span></span><span style="display:flex;"><span>plot4 
+</span></span></code></pre></div><figure><img src="/images/plot4.png"/>
+</figure>
+
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-white bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://www.flempar.be/" >
+    &copy;  flempar 2023 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Getting started on flempar</title>
+    <link>https://www.flempar.be/getting-started/</link>
+    <description>Recent content in Getting started on flempar</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 25 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://www.flempar.be/getting-started/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Getting started with flempar</title>
+      <link>https://www.flempar.be/getting-started/get-started/</link>
+      <pubDate>Sun, 25 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/getting-started/get-started/</guid>
+      <description>Your gateway to the Flemish parliament data</description>
+    </item>
+    
+    <item>
+      <title>Retrieving members of parliament</title>
+      <link>https://www.flempar.be/getting-started/retrieving-mps/</link>
+      <pubDate>Sat, 24 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/getting-started/retrieving-mps/</guid>
+      <description>Who are the MPs?</description>
+    </item>
+    
+    <item>
+      <title>Retrieving parliamentary work</title>
+      <link>https://www.flempar.be/getting-started/retrieving-work/</link>
+      <pubDate>Fri, 23 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/getting-started/retrieving-work/</guid>
+      <description>MPs at work.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -7,6 +7,7 @@ theme_version: '2.8.2'
 cascade:
   featured_image: '/images/banner3.jpg'
 ---
+<br>
 
 We blog on the use of **flempar**, an R-package providing an interface with the API of the Flemish parliament to retrieve its data. 
 
@@ -14,3 +15,12 @@ Please get in contact when you want to contribute your use case to the blog or y
 
 You can **download** and **install** the package following the steps described [here](https://www.flempar.be/getting-started/get-started/).
 
+<br>
+<br>
+<div style="text-align:center">
+<img src="/images/UA-eng-hor-1-RGB.png" alt="Logo 1" width="200">
+<img src="/images/dm.png" alt="Logo 1" width="200">
+</div>
+<br>
+
+  

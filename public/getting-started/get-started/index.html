@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Getting started with flempar | flempar</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Your gateway to the Flemish parliament data">
+    <meta name="generator" content="Hugo 0.96.0" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+  
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="Getting started with flempar" />
+<meta property="og:description" content="Your gateway to the Flemish parliament data" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.flempar.be/getting-started/get-started/" /><meta property="article:section" content="Getting started" />
+<meta property="article:published_time" content="2022-09-25T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-09-07T00:00:00+00:00" /><meta property="og:site_name" content="flempar" />
+
+<meta itemprop="name" content="Getting started with flempar">
+<meta itemprop="description" content="Your gateway to the Flemish parliament data"><meta itemprop="datePublished" content="2022-09-25T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2022-09-07T00:00:00+00:00" />
+<meta itemprop="wordCount" content="438">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Getting started with flempar"/>
+<meta name="twitter:description" content="Your gateway to the Flemish parliament data"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  <header class="cover bg-top" style="background-image: url('https://www.flempar.be/images/banner3.jpg');">
+    <div class="bg-black-30">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        flempar
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/documentation/" title="Documentation page">
+              Documentation
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/publications/" title="Publications page">
+              Publications
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/getting-started/" title="Getting started page">
+              Getting started
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        
+          <div class="f2 f1-l fw2 white-90 mb0 lh-title">Getting started with flempar</div>
+          
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        GETTING STARTED
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Getting started with flempar</h1>
+      
+      <p class="tracked">
+        By <strong>Evelien Willems, Frederik Heylen</strong>
+      </p>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-09-25T00:00:00Z">September 25, 2022</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="download-and-installation">Download and installation</h2>
+<p>You can install the <code>flempar</code> package from the GitHub account of the Political Science Department of the University of Antwerp, <a href="https://github.com/PolscienceAntwerp/flempar">https://github.com/PolscienceAntwerp/flempar</a>. <strong>Mac users</strong> will also need to install <a href="https://apps.apple.com/be/app/xcode/id497799835?mt=12">Xcode</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>require(devtools) 
+</span></span><span style="display:flex;"><span>install_github(<span style="color:#0ff;font-weight:bold">&#34;PolscienceAntwerp/flempar&#34;</span>) 
+</span></span></code></pre></div><p>We then load the <code>flempar</code> package along with the <a href="https://www.tidyverse.org/packages/">tidyverse</a> suite of R packages to manipulate the data and visualize some results. Additionally, we load in <code>data.table</code>, making working with data frames easier (more info <a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html">here</a>).</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>library(flempar)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>library(dplyr) 
+</span></span><span style="display:flex;"><span>library(tidyr) 
+</span></span><span style="display:flex;"><span>library(tibble) 
+</span></span><span style="display:flex;"><span>library(ggplot2) 
+</span></span><span style="display:flex;"><span>library(stringr)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>library(data.table)
+</span></span></code></pre></div><p>In case you don&rsquo;t have these extra R-packages already installed. Run the following code first, <em>then</em> run the above chunk of code.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>install.packages(<span style="color:#0ff;font-weight:bold">&#34;dplyr&#34;</span>) 
+</span></span><span style="display:flex;"><span>install.packages(<span style="color:#0ff;font-weight:bold">&#34;tidyr&#34;</span>) 
+</span></span><span style="display:flex;"><span>install.packages(<span style="color:#0ff;font-weight:bold">&#34;tibble&#34;</span>) 
+</span></span><span style="display:flex;"><span>install.packages(<span style="color:#0ff;font-weight:bold">&#34;ggplot2&#34;</span>) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>install.packages(<span style="color:#0ff;font-weight:bold">&#34;data.table&#34;</span>)
+</span></span></code></pre></div><h2 id="first-try-out">First try out</h2>
+<p>Now, let&rsquo;s test whether the installation worked! You can try running the <code>get_mp()</code> function with its default options, specifying no parameters. This delivers you the demographics of the current MPs. At the moment of writing this blog post, this comprises all MPs seating in the 2019-2024 legislature.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>get_mp()
+</span></span></code></pre></div><p>When making calls, you get feedback about the number of calls that will be made. Depending on the number of calls, this might take a couple of seconds to several minutes. If the call succeeds, the exact time needed to do so gets displayed.</p>
+<p>In this regard, the build-in <code>use_parallel=TRUE</code> argument is one of the main advantages of using our <code>flempar</code> package. This functionality ensures that instead of serial processing (i.e. one batch after the other), your computer is told to divide the work among its processing cores to execute the work in parallel (i.e. simultaneously); which significantly speeds up the data retrieving process. So, in almost all instances, you will want keep the default-setting <code>use_parallel=TRUE</code>, which makes it unnecessary to explicitely specificy this as a parameter in the function.</p>
+<p>Example of feedback:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>Making <span style="color:#ff0;font-weight:bold">124</span> calls.
+</span></span><span style="display:flex;"><span>Made <span style="color:#ff0;font-weight:bold">124</span> calls in <span style="color:#ff0;font-weight:bold">143.7</span> seconds.  
+</span></span></code></pre></div><p>What you get is a simple overview of the data. This is how the output looks like:</p>
+<figure><img src="/images/DefaultOutput_get_mp.png"/><figcaption>
+            <h4>Default output `get_mp()`</h4>
+        </figcaption>
+</figure>
+
+<p>So on to the <code>get_work()</code>function. In contrast to the <code>get_mp</code> function, you <em>always</em> need to specify a date range using the following arguments:</p>
+<ul>
+<li>date_range_from: the start date YYYY-MM-DD</li>
+<li>date_range_to: the end date YYYY-MM-DD</li>
+</ul>
+<p>As an enormous amount of data can be retrieved through the <code>get_work()</code> function, it is highly <strong>recommended to test your query on a limited date range</strong> before expanding the date range to comprise multiple months to years. As no other parameters are specified, you end up with the default data, namely info about plenary debates.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>get_work(date_range_from=<span style="color:#0ff;font-weight:bold">&#34;2022-03-01&#34;</span>
+</span></span><span style="display:flex;"><span>         , date_range_to=<span style="color:#0ff;font-weight:bold">&#34;2022-03-15&#34;</span>)
+</span></span></code></pre></div><p>Again, you get some performance feedback about the calls being made and a first rough look at the output.</p>
+<p><strong>That&rsquo;s it, you&rsquo;ve now covered the basics of the <code>flempar</code> package!</strong></p>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-white bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://www.flempar.be/" >
+    &copy;  flempar 2023 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

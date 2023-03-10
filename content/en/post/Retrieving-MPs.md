@@ -2,7 +2,7 @@
 title: Retrieving members of parliament
 author: ["Evelien Willems", "Frederik Heylen"]
 featured_image: '/images/c_feature14.png'
-
+banner: '/images/banner3.jpg'
 
 # Summary for listings and search engines
 summary: Who are the MPs?

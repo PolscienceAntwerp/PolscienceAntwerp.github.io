@@ -2,7 +2,7 @@
 title: Working with nested data
 author: ["Evelien Willems"]
 featured_image: '/images/c_feature17.png'
-
+banner: '/images/banner3.jpg'
 # Summary for listings and search engines
 summary: How to extract data nested in lists in lists. 
 
