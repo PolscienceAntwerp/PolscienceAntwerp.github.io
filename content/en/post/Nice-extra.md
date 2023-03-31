@@ -2,7 +2,7 @@
 title: Some nice extra's
 author: ["Evelien Willems", "Frederik Heylen"]
 featured_image: '/images/c_feature13.png'
-
+banner: '/images/banner3.jpg'
 
 # Summary for listings and search engines
 summary: Writing data to CSV file & applying regexp. 

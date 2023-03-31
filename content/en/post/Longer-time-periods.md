@@ -2,7 +2,8 @@
 title: Extracting large amounts of data
 author: ["Niek Tettero"]
 featured_image: '/images/c_feature16.png'
-
+banner: '/images/banner3.jpg' 
+#omit_header_text: true
 
 # Summary for listings and search engines
 summary: Extracting data covering multiple years 

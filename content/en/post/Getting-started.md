@@ -2,7 +2,7 @@
 title: Getting started with flempar
 author: ["Evelien Willems", "Frederik Heylen"]
 featured_image: '/images/c_feature15.png'
-
+banner: '/images/banner3.jpg'
 # Summary for listings and search engines
 summary: Your gateway to the Flemish parliament data
 

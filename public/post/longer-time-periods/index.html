@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Extracting large amounts of data | flempar</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Extracting data covering multiple years">
+    <meta name="generator" content="Hugo 0.96.0" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+  
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="Extracting large amounts of data" />
+<meta property="og:description" content="Extracting data covering multiple years" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.flempar.be/post/longer-time-periods/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-02-07T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-02-07T00:00:00+00:00" /><meta property="og:site_name" content="flempar" />
+
+<meta itemprop="name" content="Extracting large amounts of data">
+<meta itemprop="description" content="Extracting data covering multiple years"><meta itemprop="datePublished" content="2023-02-07T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-02-07T00:00:00+00:00" />
+<meta itemprop="wordCount" content="2311">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Extracting large amounts of data"/>
+<meta name="twitter:description" content="Extracting data covering multiple years"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  <header class="cover bg-top" style="background-image: url('https://www.flempar.be/images/c_feature16.png');">
+    <div class="bg-black-30">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        flempar
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/documentation/" title="Documentation page">
+              Documentation
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/publications/" title="Publications page">
+              Publications
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/getting-started/" title="Getting started page">
+              Getting started
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Extracting large amounts of data</h1>
+      
+      <p class="tracked">
+        By <strong>Niek Tettero</strong>
+      </p>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2023-02-07T00:00:00Z">February 7, 2023</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h3 id="help-i-want-to-extract-a-large-amount-of-data">Help!? I want to extract a large amount of data</h3>
+<p>This blog post is for anyone who would like to use the flempar package to extract large amounts of data over multiple years from the Flemish Parliament’s API and use it for analysis. By walking you through several code examples, I illustrate how to use flempar to construct a dataset suitable for analysis.</p>
+<h4 id="prerequisites">Prerequisites</h4>
+<p>To follow along with the code discussed in this post, you need the following packages; <code>flempar</code>, <code>dplyr</code>, <code>tidyr</code>, <code>tibble</code>, <code>purr</code>, <code>data.table</code>, and <code>lubridate</code>. Consequently, you would have to have a basic understanding of R, the <code>dplyr</code> package and <code>flempar</code>. To familiarize yourself with the functions <code>flempar</code> offers, please read the introductory blog posts.</p>
+<h4 id="preparatory-work">Preparatory work</h4>
+<p>In this post, I will show how to collect a large amount of data to perform sentiment analysis on oral questions and interpellations in the plenary sessions of the Flemish Parliament over the past 4 years using the <code>flempar</code> package. Some endpoints in the API are limited to processing 10000 pages per call. Therefore, it is not always possible to extract all data from 4 years in one go. Nevertheless, dividing these tasks for shorter periods is a more sensible approach. Collecting all data at once may take some time. If the operation stops because of an error, we lose all our progress and need to start over. By dividing the task, we ensure the collected data is stored correctly. In case of any errors, we can start where we left off.</p>
+<p>As we are collecting a ton of data that must be combined in the last stages, keeping everything well organized is key. To do this, create a folder called data. In this data folder, create two more folders called speech and details. We will be using these folders to write the collected data to. Then in R start your script by defining these paths. This way you can follow along with the tutorial below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>path_speech &lt;- <span style="color:#0ff;font-weight:bold">&#34;C:/Users/you/data&#34;</span>
+</span></span><span style="display:flex;"><span>path_details &lt;- <span style="color:#0ff;font-weight:bold">&#34;C:/Users/you/data&#34;</span>
+</span></span></code></pre></div><p>The flowchart below presents the step-by-step approach from data collection to the final data frame. The data collection results in four data frames. To three of them, some preprocessing steps are applied to end up with cleaned data frames. The cleaned data frames with all the information concerning current and former members of parliament are joined together. The same applies to the details and speech data frames of the oral questions and interpellations. The final step is joining the details and speech data frame with the members of parliament data frame.</p>
+<figure><img src="/images/flowchart_longtimeperiods.jpg"/>
+</figure>
+
+<p>To automate the data collection process, a data frame consisting of all start and end dates is needed. You can play with the length of the intervals in your date data frame. In this case, half-year intervals, specifically 182 days, will suffice. The collection of other data could require a shorter interval to not run into the limits of the API.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>data.frame(datum_start  = seq(ymd(<span style="color:#0ff;font-weight:bold">&#34;2018-01-01&#34;</span>),
+</span></span><span style="display:flex;"><span>                              ymd(<span style="color:#0ff;font-weight:bold">&#34;2022-12-31&#34;</span>),
+</span></span><span style="display:flex;"><span>                              by = <span style="color:#ff0;font-weight:bold">182</span>)) %&gt;%
+</span></span><span style="display:flex;"><span>  mutate(datum_end = lead(datum_start<span style="color:#ff0;font-weight:bold">-1</span>, default = ymd(<span style="color:#0ff;font-weight:bold">&#34;2022-12-31&#34;</span>))) -&gt; date
+</span></span></code></pre></div><p>For this period, the result is a data frame of 11 rows. The last row represents a concise time interval as the last included date is set to finish at a default 2022-12-31.</p>
+<p>INSERT IMAGE HERE</p>
+<p>Note that you can easily collect data from a longer period (e.g. the past 20 years) by simply widening the interval in the data frame.</p>
+<h4 id="collecting-data">Collecting data</h4>
+<p>After specifying the path variables, we use a <em>for loop</em> to extract the data for all time intervals. The loop iterates over the number of rows of the date data frame and writes the result of the <code>get_work</code> function for the period specified in each row to a variable defined in the for loop called <code>output</code>. If the <code>get_work</code> function fails, we only risk losing one iteration.</p>
+<p>Step by step, this function works as follows. In the <code>try</code> function, we execute the <code>get_work</code> function. If everything goes well, the function retrieves the data. The <em>if statement</em> is used to detect any errors in the get_work function. If the output of <code>get_work</code> is of the class <code>try-error</code>, the <code>Sys.sleep</code> function is activated and puts the loop to sleep (first 60 seconds, then two minutes, followed by 30 minutes). If the output class is still a <code>try-error</code> after sleeping for a total of 33 minutes, the loop is stopped. Worst case scenario, the connection to the API does not come about after 33 minutes, and the loop stops.
+If no errors occur, <code>saveRDS</code> saves the output as an <em>rds file</em> in the location specified in the path variable. An <em>rds file</em> is R’s own data file format that allows it to preserve data types of columns. It also takes up less memory than a CSV file and retains the data types (like character and numeric). Using a path, we can save the outputs in a predetermined folder.</p>
+<p>To retrieve the session details, we use the same structure, only changing the parameter of the <code>type</code> argument of the <code>get_work</code> function to <em>details</em> and the <em>path</em>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>for(i in <span style="color:#ff0;font-weight:bold">1</span>:nrow(date)){
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  output &lt;- try({
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    get_work(date_range_from=date$datum_start[[i]]
+</span></span><span style="display:flex;"><span>             ,date_range_to=date$datum_end[[i]]
+</span></span><span style="display:flex;"><span>             ,type=<span style="color:#0ff;font-weight:bold">&#34;speech&#34;</span>
+</span></span><span style="display:flex;"><span>             ,fact=<span style="color:#0ff;font-weight:bold">&#34;oral_questions_and_interpellations&#34;</span>
+</span></span><span style="display:flex;"><span>             ,plen_comm=<span style="color:#0ff;font-weight:bold">&#34;plen&#34;</span>)
+</span></span><span style="display:flex;"><span>  })
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  if(any(stringr::str_detect(tolower(output[1]),<span style="color:#0ff;font-weight:bold">&#34;no sessions found&#34;</span>))){
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>      next()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>  }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  if(any(class(output) == <span style="color:#0ff;font-weight:bold">&#34;try-error&#34;</span>)){
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    message(<span style="color:#0ff;font-weight:bold">&#34;error, will sleep for 1 minute&#34;</span>)
+</span></span><span style="display:flex;"><span>    Sys.sleep(<span style="color:#ff0;font-weight:bold">60</span>)
+</span></span><span style="display:flex;"><span>    message(<span style="color:#0ff;font-weight:bold">&#34;slept for 1 minute, let&#39;s retry&#34;</span>)
+</span></span><span style="display:flex;"><span>    try({
+</span></span><span style="display:flex;"><span>      get_work(date_range_from=date$datum_start[[i]]
+</span></span><span style="display:flex;"><span>               ,date_range_to=date$datum_end[[i]]
+</span></span><span style="display:flex;"><span>               ,type=<span style="color:#0ff;font-weight:bold">&#34;speech&#34;</span>
+</span></span><span style="display:flex;"><span>               ,fact=<span style="color:#0ff;font-weight:bold">&#34;oral_questions_and_interpellations&#34;</span>
+</span></span><span style="display:flex;"><span>               ,plen_comm=<span style="color:#0ff;font-weight:bold">&#34;plen&#34;</span>)
+</span></span><span style="display:flex;"><span>    })}
+</span></span><span style="display:flex;"><span>  if(any(class(output) == <span style="color:#0ff;font-weight:bold">&#34;try-error&#34;</span>)){
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    message(<span style="color:#0ff;font-weight:bold">&#34;another error, will sleep for 2 minutes&#34;</span>)
+</span></span><span style="display:flex;"><span>    Sys.sleep(<span style="color:#ff0;font-weight:bold">2</span>*<span style="color:#ff0;font-weight:bold">60</span>)
+</span></span><span style="display:flex;"><span>    message(<span style="color:#0ff;font-weight:bold">&#34;slept for 2 minutes, let&#39;s retry&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    try({
+</span></span><span style="display:flex;"><span>      get_work(date_range_from=date$datum_start[[i]]
+</span></span><span style="display:flex;"><span>               ,date_range_to=date$datum_end[[i]]
+</span></span><span style="display:flex;"><span>               ,type=<span style="color:#0ff;font-weight:bold">&#34;speech&#34;</span>
+</span></span><span style="display:flex;"><span>               ,fact=<span style="color:#0ff;font-weight:bold">&#34;oral_questions_and_interpellations&#34;</span>
+</span></span><span style="display:flex;"><span>               ,plen_comm=<span style="color:#0ff;font-weight:bold">&#34;plen&#34;</span>)
+</span></span><span style="display:flex;"><span>    })}
+</span></span><span style="display:flex;"><span>  if(any(class(output) == <span style="color:#0ff;font-weight:bold">&#34;try-error&#34;</span>)){
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    message(<span style="color:#0ff;font-weight:bold">&#34;another error, powernap of 15 minutes&#34;</span>)
+</span></span><span style="display:flex;"><span>    Sys.sleep(<span style="color:#ff0;font-weight:bold">15</span>*<span style="color:#ff0;font-weight:bold">60</span>)
+</span></span><span style="display:flex;"><span>    message(<span style="color:#0ff;font-weight:bold">&#34;slept for 15 minutes, let&#39;s try one more time&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    try({
+</span></span><span style="display:flex;"><span>      get_work(date_range_from=date$datum_start[[i]]
+</span></span><span style="display:flex;"><span>               ,date_range_to=date$datum_end[[i]]
+</span></span><span style="display:flex;"><span>               ,type=<span style="color:#0ff;font-weight:bold">&#34;speech&#34;</span>
+</span></span><span style="display:flex;"><span>               ,fact=<span style="color:#0ff;font-weight:bold">&#34;oral_questions_and_interpellations&#34;</span>
+</span></span><span style="display:flex;"><span>               ,plen_comm=<span style="color:#0ff;font-weight:bold">&#34;plen&#34;</span>)
+</span></span><span style="display:flex;"><span>    })}
+</span></span><span style="display:flex;"><span>  if(any(class(output) == <span style="color:#0ff;font-weight:bold">&#34;try-error&#34;</span>)){
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    stop()
+</span></span><span style="display:flex;"><span>    message(<span style="color:#0ff;font-weight:bold">&#34;function stopped&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  saveRDS(output, paste0(path_speech,date$datum_start[[i]],<span style="color:#0ff;font-weight:bold">&#34;.rds&#34;</span>))
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  message(i,<span style="color:#0ff;font-weight:bold">&#34;/&#34;</span>,nrow(date))
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="combining-retrieved-data-into-data-frames">Combining retrieved data into data frames</h4>
+<p>If all goes well, our data folder contains 11 rds files for every time interval in the four years. In the code below, we use the <code>list.files</code> and <code>map_dfr</code> functions to join the rds files stored in our folder to one data frame. <code>list.files</code> produces a character vector of all the file names in the specified directory. Using <code>map_dfr</code>, we return a data frame created by row binding all separate rds files.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>oral_questions_and_interpellations &lt;- list.files(path = path_speech
+</span></span><span style="display:flex;"><span>                         ,pattern = <span style="color:#0ff;font-weight:bold">&#34;*.rds&#34;</span>, full.names = <span style="color:#fff;font-weight:bold">TRUE</span> ) %&gt;%
+</span></span><span style="display:flex;"><span>map_dfr(readRDS)
+</span></span></code></pre></div><p>The result is a data frame that includes all speech fragments of the oral questions and interpellations. This data frame has 55611 rows and four variables: <em>journaallijn_id</em>, <em>text</em>, <em>sprekertitel</em>, and <em>persoon_id</em>. Each row represents a speech fragment stored in the text column. The <em>journaallijn_id</em> refers to the id given to each interaction (question and answer), the <em>sprekertitel</em>, and the <em>persoon_id</em>, which includes the unique id of the speaker.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>length(unique(oral_questions_and_interpellations$persoon_id))
+</span></span></code></pre></div><p>Over the whole period, there have been 211 unique speakers, most of whom are parliament members, but the speakers also include the chairman and the ministers. When written as a CSV file, this data frame is 24.8 MB.
+The session&rsquo;s details are extracted using the same <em>for loop</em> but by changing the <code>type</code> argument to <em>details</em> instead of speech. Additionally, you must change the path.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>for(i in <span style="color:#ff0;font-weight:bold">1</span>:nrow(date)){
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  output &lt;- try({
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    get_work(date_range_from=date$datum_start[[i]]
+</span></span><span style="display:flex;"><span>             ,date_range_to=date$datum_end[[i]]
+</span></span><span style="display:flex;"><span>             ,type=<span style="color:#0ff;font-weight:bold">&#34;details&#34;</span>
+</span></span><span style="display:flex;"><span>             ,fact=<span style="color:#0ff;font-weight:bold">&#34;oral_questions_and_interpellations&#34;</span>
+</span></span><span style="display:flex;"><span>             ,plen_comm=<span style="color:#0ff;font-weight:bold">&#34;plen&#34;</span>)
+</span></span><span style="display:flex;"><span>  })
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  if(any(stringr::str_detect(tolower(output[1]),<span style="color:#0ff;font-weight:bold">&#34;no sessions found&#34;</span>))){
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>      next()
+</span></span><span style="display:flex;"><span>   
+</span></span><span style="display:flex;"><span>  }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  if(any(class(output) == <span style="color:#0ff;font-weight:bold">&#34;try-error&#34;</span>)){
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    message(<span style="color:#0ff;font-weight:bold">&#34;error, will sleep for 1 minute&#34;</span>)
+</span></span><span style="display:flex;"><span>    Sys.sleep(<span style="color:#ff0;font-weight:bold">60</span>)
+</span></span><span style="display:flex;"><span>    message(<span style="color:#0ff;font-weight:bold">&#34;slept for 1 minute, let&#39;s retry&#34;</span>)
+</span></span><span style="display:flex;"><span>    try({
+</span></span><span style="display:flex;"><span>      get_work(date_range_from=date$datum_start[[i]]
+</span></span><span style="display:flex;"><span>               ,date_range_to=date$datum_end[[i]]
+</span></span><span style="display:flex;"><span>               ,type=<span style="color:#0ff;font-weight:bold">&#34;details&#34;</span>
+</span></span><span style="display:flex;"><span>               ,fact=<span style="color:#0ff;font-weight:bold">&#34;oral_questions_and_interpellations&#34;</span>
+</span></span><span style="display:flex;"><span>               ,plen_comm=<span style="color:#0ff;font-weight:bold">&#34;plen&#34;</span>)
+</span></span><span style="display:flex;"><span>    })}
+</span></span><span style="display:flex;"><span>  if(any(class(output) == <span style="color:#0ff;font-weight:bold">&#34;try-error&#34;</span>)){
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    message(<span style="color:#0ff;font-weight:bold">&#34;another error, will sleep for 2 minutes&#34;</span>)
+</span></span><span style="display:flex;"><span>    Sys.sleep(<span style="color:#ff0;font-weight:bold">2</span>*<span style="color:#ff0;font-weight:bold">60</span>)
+</span></span><span style="display:flex;"><span>    message(<span style="color:#0ff;font-weight:bold">&#34;slept for 2 minutes, let&#39;s retry&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    try({
+</span></span><span style="display:flex;"><span>      get_work(date_range_from=date$datum_start[[i]]
+</span></span><span style="display:flex;"><span>               ,date_range_to=date$datum_end[[i]]
+</span></span><span style="display:flex;"><span>               ,type=<span style="color:#0ff;font-weight:bold">&#34;details&#34;</span>
+</span></span><span style="display:flex;"><span>               ,fact=<span style="color:#0ff;font-weight:bold">&#34;oral_questions_and_interpellations&#34;</span>
+</span></span><span style="display:flex;"><span>               ,plen_comm=<span style="color:#0ff;font-weight:bold">&#34;plen&#34;</span>)
+</span></span><span style="display:flex;"><span>    })}
+</span></span><span style="display:flex;"><span>  if(any(class(output) == <span style="color:#0ff;font-weight:bold">&#34;try-error&#34;</span>)){
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    message(<span style="color:#0ff;font-weight:bold">&#34;another error, powernap of 15 minutes&#34;</span>)
+</span></span><span style="display:flex;"><span>    Sys.sleep(<span style="color:#ff0;font-weight:bold">15</span>*<span style="color:#ff0;font-weight:bold">60</span>)
+</span></span><span style="display:flex;"><span>    message(<span style="color:#0ff;font-weight:bold">&#34;slept for 15 minutes, let&#39;s try one more time&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    try({
+</span></span><span style="display:flex;"><span>      get_work(date_range_from=date$datum_start[[i]]
+</span></span><span style="display:flex;"><span>               ,date_range_to=date$datum_end[[i]]
+</span></span><span style="display:flex;"><span>               ,type=<span style="color:#0ff;font-weight:bold">&#34;details&#34;</span>
+</span></span><span style="display:flex;"><span>               ,fact=<span style="color:#0ff;font-weight:bold">&#34;oral_questions_and_interpellations&#34;</span>
+</span></span><span style="display:flex;"><span>               ,plen_comm=<span style="color:#0ff;font-weight:bold">&#34;plen&#34;</span>)
+</span></span><span style="display:flex;"><span>    })}
+</span></span><span style="display:flex;"><span>  if(any(class(output) == <span style="color:#0ff;font-weight:bold">&#34;try-error&#34;</span>)){
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    stop()
+</span></span><span style="display:flex;"><span>    message(<span style="color:#0ff;font-weight:bold">&#34;function stopped&#34;</span>)
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  saveRDS(output, paste0(path_details,date$datum_start[[i]],<span style="color:#0ff;font-weight:bold">&#34;.rds&#34;</span>))
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  message(i,<span style="color:#0ff;font-weight:bold">&#34;/&#34;</span>,nrow(date))
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>However, combining the resulting rds files into a data frame, including all ‘session details’, requires a bit more attention. Not all output might not have the same columns or column names. Therefore, we need a different approach. The method works as follows. First, we define a variable called path. The <code>fs::dir_ls</code> function returns file names as named fs_path character vectors. These are used to create a list with the length of the number of files in our directory. Then we use a <em>for loop</em> to iterate over the files in the directory we specified in the path variable. Next, we read all files with <code>readRDS</code>. The variables we need are selected and stored in the list. Note that, using the <code>mutate</code> function, we create a variable formatted as <em>year-month-day</em>. The rationale for this will become evident later. Lastly, we bind the list to end up with a data frame.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>path &lt;- fs::dir_ls(path_details)  		<span style="color:#007f7f">#~/test_flemparblog_data/details/</span>
+</span></span><span style="display:flex;"><span>list &lt;- vector(mode=<span style="color:#0ff;font-weight:bold">&#34;list&#34;</span>,length= length(path))
+</span></span><span style="display:flex;"><span>for(i in seq_along(path)){
+</span></span><span style="display:flex;"><span>  readRDS(path[[i]]) %&gt;% 
+</span></span><span style="display:flex;"><span>    select(verg_id, datum=datumbegin, journaallijn_id, id_fact) %&gt;%
+</span></span><span style="display:flex;"><span>    mutate(datum = as.Date(datum, format = <span style="color:#0ff;font-weight:bold">&#34;%Y-%m-%d&#34;</span>)) -&gt; list[[i]]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>details &lt;- rbindlist(list)
+</span></span></code></pre></div><p>Now, the details data frame can be joined with the data frame containing all the text of the oral questions and interpellations.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>oral_questions_and_interpellations %&gt;%
+</span></span><span style="display:flex;"><span>	left_join(details, by = c(“id_fact” = id_fact)) -&gt; oqai_details
+</span></span></code></pre></div><h4 id="members-of-parliament-mp">Members of Parliament (MP)</h4>
+<p>All MPs have a unique id that can be linked to their personal information. As discussed in the <strong>Retrieving members of parliament</strong> blog, the <code>get_mp</code> function allows us to extract the personal information of all the MPs.</p>
+<p>Extracting information on current and former MPs is very straightforward. One thing to notice is the use of the <code>raw</code> parameter. By selecting this parameter, the function returns all the data available in the API without preprocessing. This includes the parliamentarians&rsquo; current and former party membership.</p>
+<p>If the parameter is not specified as raw, the function only outputs the current or most recent information. Since we are interested in a period that extends the current parliamentary year and several MPs have switched parties over time, we need a workaround. The <code>raw</code> parameter provides this workaround as the output now includes current and former party memberships. Later, we will use this information to join the correct information to the oral questions and interpellations.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>current &lt;- get_mp(selection=<span style="color:#0ff;font-weight:bold">&#34;current&#34;</span>
+</span></span><span style="display:flex;"><span>                 , fact=<span style="color:#0ff;font-weight:bold">&#34;raw&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>former &lt;- get_mp(selection=<span style="color:#0ff;font-weight:bold">&#34;former&#34;</span>
+</span></span><span style="display:flex;"><span>                     ,fact=<span style="color:#0ff;font-weight:bold">&#34;raw&#34;</span>)
+</span></span></code></pre></div><p>Although the code is straightforward, this call returns many data, which is also quite messy. We find ourselves in a <em>data frame-ception</em> with data frames <strong>nested</strong> within several variables. These variables need to be unnested to display the data we need correctly. For this, we use the code fragment below. This shows the main advantage of <code>flempar</code>: the amount of preprocessing it does when other parameters are used.</p>
+<p>The first line turns our data frame into a tibble where every variable starts with ‘vv’. This ‘vv’ helps to unnest all the nested variables in one go, avoiding the hassle of specifying each variable that needs to be unnested. The next step is to select the variables we need. This could vary depending on what data you need, so please look at all the variables included; there might be some you would like to use that we did not include. Depending on which variables you select, additional unnesting steps are necessary. Some variables, such as <em>huidigefractie</em> hold multiple values, such as <em>party_id</em>, <em>colour</em>, the link to the party <em>logo</em>, the <em>name</em>, and the <em>number of seats</em> in parliament. More unnesting is needed to give each value its own variable. The same approach holds for other variables that include multiple values.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>current %&gt;%
+</span></span><span style="display:flex;"><span>  tibble::tibble(vv = .) %&gt;%
+</span></span><span style="display:flex;"><span>  tidyr::unnest_wider(vv) %&gt;%
+</span></span><span style="display:flex;"><span>  dplyr::select(id_mp=id,voornaam, achternaam=naam,geslacht,geboortedatum,geboorteplaats,huidigefractie,lidmaatschap) %&gt;%
+</span></span><span style="display:flex;"><span>  tidyr::unnest_wider(huidigefractie, names_sep=<span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  tidyr::unnest_wider(huidigefractie_1, names_sep=<span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  tidyr::unnest_wider(lidmaatschap, names_sep=<span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  tidyr::unnest(lidmaatschap_1) %&gt;%
+</span></span><span style="display:flex;"><span>  tidyr::unnest(c( fractie)) %&gt;%
+</span></span><span style="display:flex;"><span>  dplyr::select(id_mp,voornaam, achternaam,geslacht,geboortedatum,geboorteplaats,party_id_current=huidigefractie_1_id,party_naam_current = huidigefractie_1_naam,naam,datumVan,datumTot, zetel_aantal = ,`zetel-aantal`) %&gt;%
+</span></span><span style="display:flex;"><span>  dplyr::mutate(geboortedatum = lubridate::date(lubridate::ymd_hms(geboortedatum)))  -&gt; current_clean
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>former %&gt;%
+</span></span><span style="display:flex;"><span>  tibble::tibble(vv = .) %&gt;%
+</span></span><span style="display:flex;"><span>  tidyr::unnest_wider(vv) %&gt;%
+</span></span><span style="display:flex;"><span>  dplyr::select(id_mp=id,voornaam, achternaam=naam,geslacht,geboortedatum,geboorteplaats,huidigefractie,lidmaatschap) %&gt;%
+</span></span><span style="display:flex;"><span>  tidyr::unnest_wider(huidigefractie, names_sep=<span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  tidyr::unnest_wider(huidigefractie_1, names_sep=<span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  tidyr::unnest_wider(lidmaatschap, names_sep=<span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  tidyr::unnest(lidmaatschap_1) %&gt;%
+</span></span><span style="display:flex;"><span>  tidyr::unnest(c( fractie)) %&gt;%
+</span></span><span style="display:flex;"><span>  dplyr::select(id_mp,voornaam, achternaam,geslacht,geboortedatum,geboorteplaats,party_id_current=huidigefractie_1_id,party_naam_current = huidigefractie_1_naam,naam,datumVan,datumTot,zetel_aantal =`zetel-aantal`) %&gt;%
+</span></span><span style="display:flex;"><span>  dplyr::mutate(geboortedatum = lubridate::date(lubridate::ymd_hms(geboortedatum)))  -&gt; former_clean
+</span></span></code></pre></div><p>This results in a <em>‘current_cleaned&rsquo;</em> dataframe with 285 observations and 12 columns and a <em>&lsquo;former_cleaned’</em> dataframe with 2778 observations and 12 columns.</p>
+<p>Note that the Flemish Parliament has 124 members and the <em>current_cleaned</em> data frame has 285 observations. Some MPs occur more than once because they have, for instance, been part of different political parties over time. This could either be because parties have switched names or merged, or because the MP has actually switched parties.</p>
+<p>This final step binds the cleaned data frames together.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>mp &lt;- rbind(current_clean,former_clean)
+</span></span></code></pre></div><h4 id="joining-mp-info-with-facts">Joining MP info with facts</h4>
+<p>We encounter an issue if we want to combine the MP information with our oral question and interpellations data frame. As mentioned, several MPs have switched parties over time. To properly join the two data frames together, considering the party membership of the MP at the time of the oral question or interpellation, we need to blow up the MP data frame. The data frame created by the code below consists of the <em>mp_id</em>, the political <em>party</em>, and all the days the MP was a member of that party.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>mp %&gt;%
+</span></span><span style="display:flex;"><span>  mutate(datumTot = as.Date(datumTot)) %&gt;%
+</span></span><span style="display:flex;"><span>  mutate(datumVan = as.Date(datumVan)) %&gt;%
+</span></span><span style="display:flex;"><span>  mutate(datumTot = if_else(is.na(datumTot), Sys.Date(), datumTot)) %&gt;%
+</span></span><span style="display:flex;"><span>  <span style="color:#007f7f"># sequence of monthly dates for each corresponding start, end elements</span>
+</span></span><span style="display:flex;"><span>  transmute(id_mp, voornaam, achternaam, geslacht, geboortedatum
+</span></span><span style="display:flex;"><span>            , geboorteplaats, naam, zetel_aantal, 
+</span></span><span style="display:flex;"><span>            day = map2(datumVan, datumTot, seq, by = <span style="color:#0ff;font-weight:bold">&#34;1 day&#34;</span>)) %&gt;%
+</span></span><span style="display:flex;"><span>  <span style="color:#007f7f"># unnest the list column</span>
+</span></span><span style="display:flex;"><span>  tidyr::unnest(cols = c(day)) %&gt;%
+</span></span><span style="display:flex;"><span>  <span style="color:#007f7f"># remove any duplicate rows</span>
+</span></span><span style="display:flex;"><span>  distinct -&gt; id_mp_day
+</span></span></code></pre></div><p>This is where the date (datum) variable of the details data frame comes in. Using a <code>left_join</code>, we can join the oral questions and interpellations data frame to MP data frame, joining them by date and id.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>oqai_details %&gt;%
+</span></span><span style="display:flex;"><span>  left_join(id_mp_day, by = c(<span style="color:#0ff;font-weight:bold">&#39;datum&#39;</span> = <span style="color:#0ff;font-weight:bold">&#39;day&#39;</span>, <span style="color:#0ff;font-weight:bold">&#39;persoon_id&#39;</span> = <span style="color:#0ff;font-weight:bold">&#39;id_mp&#39;</span>)) -&gt; final_df
+</span></span></code></pre></div><p>There you go! You have a final data frame including all oral questions and interpellations from the Flemish Parliament’s plenary sessions over the last four years, including all speaker information necessary for further analysis. As mentioned, you can easily collect this data for 20 years using the same method.</p>
+<h4 id="final-remarks">Final remarks</h4>
+<ul>
+<li>The <code>flempar</code> package combined with R’s <code>try</code> function allows us to collect data over longer periods of time.</li>
+<li>Using <code>dplyr</code>, the data collected with <code>flempar</code> can be preprocessed and combined to create useful data frames for analysis.</li>
+</ul>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-white bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://www.flempar.be/" >
+    &copy;  flempar 2023 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>flempar</title>
+    <link>https://www.flempar.be/</link>
+    <description>Recent content on flempar</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 07 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.flempar.be/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Extracting large amounts of data</title>
+      <link>https://www.flempar.be/post/longer-time-periods/</link>
+      <pubDate>Tue, 07 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/post/longer-time-periods/</guid>
+      <description>Extracting data covering multiple years</description>
+    </item>
+    
+    <item>
+      <title>Working with nested data</title>
+      <link>https://www.flempar.be/post/nested-data/</link>
+      <pubDate>Mon, 30 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/post/nested-data/</guid>
+      <description>How to extract data nested in lists in lists.</description>
+    </item>
+    
+    <item>
+      <title>Some nice extra&#39;s</title>
+      <link>https://www.flempar.be/post/nice-extra/</link>
+      <pubDate>Mon, 26 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/post/nice-extra/</guid>
+      <description>Writing data to CSV file &amp;amp; applying regexp.</description>
+    </item>
+    
+    <item>
+      <title>Getting started with flempar</title>
+      <link>https://www.flempar.be/getting-started/get-started/</link>
+      <pubDate>Sun, 25 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/getting-started/get-started/</guid>
+      <description>Your gateway to the Flemish parliament data</description>
+    </item>
+    
+    <item>
+      <title>Retrieving parliamentary work</title>
+      <link>https://www.flempar.be/post/retrieving-work/</link>
+      <pubDate>Sun, 25 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/post/retrieving-work/</guid>
+      <description>MPs at work.</description>
+    </item>
+    
+    <item>
+      <title>Retrieving members of parliament</title>
+      <link>https://www.flempar.be/getting-started/retrieving-mps/</link>
+      <pubDate>Sat, 24 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/getting-started/retrieving-mps/</guid>
+      <description>Who are the MPs?</description>
+    </item>
+    
+    <item>
+      <title>Retrieving members of parliament</title>
+      <link>https://www.flempar.be/post/retrieving-mps/</link>
+      <pubDate>Sat, 24 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/post/retrieving-mps/</guid>
+      <description>Who are the MPs?</description>
+    </item>
+    
+    <item>
+      <title>Retrieving parliamentary work</title>
+      <link>https://www.flempar.be/getting-started/retrieving-work/</link>
+      <pubDate>Fri, 23 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/getting-started/retrieving-work/</guid>
+      <description>MPs at work.</description>
+    </item>
+    
+    <item>
+      <title>Getting started with flempar</title>
+      <link>https://www.flempar.be/post/getting-started/</link>
+      <pubDate>Wed, 07 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/post/getting-started/</guid>
+      <description>Your gateway to the Flemish parliament data</description>
+    </item>
+    
+    <item>
+      <title>Documentation</title>
+      <link>https://www.flempar.be/documentation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/documentation/</guid>
+      <description>Citation Software package Willems E., Heylen F. &amp;amp; Van Dooren W. flempar: An interface to the API of the Flemish Parliament. https://github.com/PolscienceAntwerp/Flempar.
+Project Willems E., Heylen F. &amp;amp; Van Dooren W. flempar: An interface to the API of the Flemish Parliament. www.flempar.be.
+Developers Frederik Heylen. Author. Datamarinier.
+Evelien Willems. Analyst, Tester &amp;amp; Contributor. Department of Political Science, University of Antwerp.
+Wouter Van Dooren. Contributor. Department of Political Science, University of Antwerp.</description>
+    </item>
+    
+    <item>
+      <title>Publications</title>
+      <link>https://www.flempar.be/publications/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.flempar.be/publications/</guid>
+      <description>Here you can find academic journal articles and other publications using the flempar R-package.
+Master thesis  Tettero, N. E. F. (2023). Exploring the application of sentiment classifiers based on BERT in a political context. Tilburg University. Download  </description>
+    </item>
+    
+  </channel>
+</rss>

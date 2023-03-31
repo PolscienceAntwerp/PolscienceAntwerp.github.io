@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Working with nested data | flempar</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="How to extract data nested in lists in lists.">
+    <meta name="generator" content="Hugo 0.96.0" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+  
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="Working with nested data" />
+<meta property="og:description" content="How to extract data nested in lists in lists." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.flempar.be/post/nested-data/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-01-30T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-01-30T00:00:00+00:00" /><meta property="og:site_name" content="flempar" />
+
+<meta itemprop="name" content="Working with nested data">
+<meta itemprop="description" content="How to extract data nested in lists in lists."><meta itemprop="datePublished" content="2023-01-30T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-01-30T00:00:00+00:00" />
+<meta itemprop="wordCount" content="504">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Working with nested data"/>
+<meta name="twitter:description" content="How to extract data nested in lists in lists."/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  <header class="cover bg-top" style="background-image: url('https://www.flempar.be/images/c_feature17.png');">
+    <div class="bg-black-30">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        flempar
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/documentation/" title="Documentation page">
+              Documentation
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/publications/" title="Publications page">
+              Publications
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/getting-started/" title="Getting started page">
+              Getting started
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+<div class="ananke-socials">
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        
+          <div class="f2 f1-l fw2 white-90 mb0 lh-title">Working with nested data</div>
+          
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Working with nested data</h1>
+      
+      <p class="tracked">
+        By <strong>Evelien Willems</strong>
+      </p>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2023-01-30T00:00:00Z">January 30, 2023</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h3 id="working-with-lists-in-lists">Working with lists in lists</h3>
+<p>As you may notice from your first inspection of some of the data frames the <code>get_work()</code> function delivers, the function confronts you with a couple of <em>nested</em> columns in its output. We will go over two examples to dig up relevant information from these <em>lists in lists</em>. Keep in mind that it is recommended to go step-by-step when going deeper into the lists as it is far too easy to end up with a giant unfitting data frame when combining multiple &lsquo;unnestings&rsquo; at once without knowing the exact content of the data stored within the lists.</p>
+<p><strong>1. Topics by type of activity and party: unnesting of the column <code>contacttype</code></strong></p>
+<p>Let&rsquo;s delve into these <em>lists in lists</em> by creating a <code>pi_work</code> data frame.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>pi_work &lt;- get_work(date_range_from=<span style="color:#0ff;font-weight:bold">&#34;2021-01-01&#34;</span>
+</span></span><span style="display:flex;"><span>                    , date_range_to=<span style="color:#0ff;font-weight:bold">&#34;2021-12-31&#34;</span>
+</span></span><span style="display:flex;"><span>                    , fact=<span style="color:#0ff;font-weight:bold">&#34;parliamentary_initiatives&#34;</span>
+</span></span><span style="display:flex;"><span>                    , type=<span style="color:#0ff;font-weight:bold">&#34;details&#34;</span>
+</span></span><span style="display:flex;"><span>                    , plen_comm=<span style="color:#0ff;font-weight:bold">&#34;plen&#34;</span>)
+</span></span></code></pre></div><p>Specifically, we will unnest columns to assess which MPs from which parties are most active in proposing new legislation and tabling resolutions.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>pi_work %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_fact, type_specifiek, contacttype) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest(contacttype, names_sep = <span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest(contacttype_contact, names_sep = <span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest(contacttype_contact_fractie, names_sep = <span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) -&gt; pi_type_party
+</span></span><span style="display:flex;"><span>pi_type_party
+</span></span></code></pre></div><p>Now we can make a count of the observations by relevant types of activity and party or visualize the results. First, we filter out legislative proposals made by MPs (&lsquo;Voorstel van decreet&rsquo;) and resolutions (&lsquo;Voorstel van resolutie&rsquo;).</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>pi_type_party %&gt;%
+</span></span><span style="display:flex;"><span>  filter(type_specifiek == <span style="color:#0ff;font-weight:bold">&#34;Voorstel van decreet&#34;</span> 
+</span></span><span style="display:flex;"><span>         | type_specifiek == <span style="color:#0ff;font-weight:bold">&#34;Voorstel van resolutie&#34;</span>) -&gt; pi_type_party_c
+</span></span></code></pre></div><p>Next, we group our data by party to arrive at a count. Alternatively, we can plot the results.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>pi_type_party_c %&gt;% 
+</span></span><span style="display:flex;"><span>  group_by(contacttype_contact_fractie_naam) %&gt;%
+</span></span><span style="display:flex;"><span>  count(type_specifiek, sort = T) -&gt; pi_type_party_cc
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>plot6 &lt;- ggplot(pi_type_party_cc, aes(x = reorder(contacttype_contact_fractie_naam, -n), y = n, fill = type_specifiek, colour = type_specifiek)) + 
+</span></span><span style="display:flex;"><span>  geom_bar(stat =<span style="color:#0ff;font-weight:bold">&#34;identity&#34;</span>) +
+</span></span><span style="display:flex;"><span>  labs(x=<span style="color:#0ff;font-weight:bold">&#34;&#34;</span>, y = <span style="color:#0ff;font-weight:bold">&#34;Count&#34;</span>) + 
+</span></span><span style="display:flex;"><span>  theme_classic() +
+</span></span><span style="display:flex;"><span>  theme(axis.text.x = element_text(angle = <span style="color:#ff0;font-weight:bold">90</span>, vjust=<span style="color:#ff0;font-weight:bold">.5</span>, hjust=<span style="color:#ff0;font-weight:bold">1</span>)) +
+</span></span><span style="display:flex;"><span>  theme(legend.title = element_blank())
+</span></span><span style="display:flex;"><span>plot6  
+</span></span></code></pre></div><figure><img src="/images/plot6.png"/>
+</figure>
+
+<p><strong>2. Voting records: Unnesting of the column <code>vote</code> and subsequent lists in lists</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>pi_work %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_fact, vote, type_specifiek) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest_wider(vote, names_sep = <span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest(vote_stemming) %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_fact,type_specifiek, `stemming-tegen`) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest_wider(`stemming-tegen`, names_sep=<span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_fact, type_specifiek, `stemming-tegen_persoon`,
+</span></span><span style="display:flex;"><span>         `stemming-tegen_stem`, `stemming-tegen_zetel` ) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest_longer(c(`stemming-tegen_persoon`, `stemming-tegen_stem`, `stemming-tegen_zetel`)) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest(`stemming-tegen_persoon`) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest(fractie, names_sep=<span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  rename(stem = `stemming-tegen_stem`, zetel = `stemming-tegen_zetel`) %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_fact, type_specifiek, fractie_id, fractie_naam, `fractie_zetel-aantal`, naam, voornaam, stem) -&gt; votes_against
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>votes_against &lt;- unique(votes_against)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pi_work %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_fact, vote, type_specifiek) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest_wider(vote, names_sep = <span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest(vote_stemming) %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_fact,type_specifiek, `stemming-voor`) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest_wider(`stemming-voor`, names_sep=<span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_fact, type_specifiek, `stemming-voor_persoon`,
+</span></span><span style="display:flex;"><span>         `stemming-voor_stem`, `stemming-voor_zetel` ) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest_longer(c(`stemming-voor_persoon`, `stemming-voor_stem`, `stemming-voor_zetel`)) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest(`stemming-voor_persoon`) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest(fractie, names_sep=<span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  rename(stem = `stemming-voor_stem`, zetel = `stemming-voor_zetel`)  %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_fact, type_specifiek, fractie_id, fractie_naam, `fractie_zetel-aantal`, naam, voornaam, stem) -&gt; votes_favor
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>votes_favor &lt;- unique(votes_favor)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pi_work %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_fact, vote, type_specifiek) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest_wider(vote, names_sep = <span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest(vote_stemming) %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_fact,type_specifiek, `stemming-onthouding`) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest_wider(`stemming-onthouding`, names_sep=<span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_fact, type_specifiek, `stemming-onthouding_persoon`,
+</span></span><span style="display:flex;"><span>         `stemming-onthouding_stem`, `stemming-onthouding_zetel` ) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest_longer(c(`stemming-onthouding_persoon`, `stemming-onthouding_stem`, `stemming-onthouding_zetel`)) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest(`stemming-onthouding_persoon`) %&gt;%
+</span></span><span style="display:flex;"><span>  unnest(fractie, names_sep=<span style="color:#0ff;font-weight:bold">&#34;_&#34;</span>) %&gt;%
+</span></span><span style="display:flex;"><span>  rename(stem = `stemming-onthouding_stem`, zetel = `stemming-onthouding_zetel`)  %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_fact, type_specifiek, fractie_id, fractie_naam, `fractie_zetel-aantal`, naam, voornaam, stem) -&gt; votes_abstention
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>votes_abstention &lt;- unique(votes_abstention)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>rbind(votes_against, votes_favor, votes_abstention) -&gt; votes_af
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>votes_af %&gt;%
+</span></span><span style="display:flex;"><span>  select(id_fact, fractie_naam, `fractie_zetel-aantal`, type_specifiek, stem) %&gt;%
+</span></span><span style="display:flex;"><span>  group_by(id_fact, fractie_naam,`fractie_zetel-aantal`, type_specifiek) %&gt;%
+</span></span><span style="display:flex;"><span>  count(stem)  %&gt;%
+</span></span><span style="display:flex;"><span>  mutate(prop = n/`fractie_zetel-aantal`) -&gt; votes_records
+</span></span></code></pre></div><ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-white bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://www.flempar.be/" >
+    &copy;  flempar 2023 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>
