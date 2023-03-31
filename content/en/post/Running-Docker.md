@@ -54,7 +54,7 @@ Docker is a tool that allows users to deploy and run applications securely and e
 
 Docker containers are a powerful tool for creating reproducible and portable software environments, making them an ideal choice for conducting scientific work.
 
-I will guide you through the process of installing Docker and running a container. For advanced users, I'll also show you how to create a custom image that includes any necessary software, dependencies, or packages. This is useful if you want to deploy flempar on a virtual machine in the cloud, for instance [when extracting large amounts of data]([https://docs.docker.com/](https://www.flempar.be/post/longer-time-periods/).
+I will guide you through the process of installing Docker and running a container. For advanced users, I'll also show you how to create a custom image that includes any necessary software, dependencies, or packages. This is useful if you want to deploy flempar on a virtual machine in the cloud, for instance [when extracting large amounts of data](https://www.flempar.be/post/longer-time-periods/).
 
 ### Prerequisites
 To get started, first install Docker. Go to https://docs.docker.com/get-docker/ and follow the instructions. The general steps are:
