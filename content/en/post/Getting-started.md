@@ -55,7 +55,7 @@ We guide you through several specific research questions for each of these two f
 
 ## Download and installation
 
-You can install the `flempar` package from the GitHub account of the Political Science Department of the University of Antwerp, <https://github.com/PolscienceAntwerp/flempar>. **Mac users** will also need to install [Xcode](https://apps.apple.com/be/app/xcode/id497799835?mt=12). 
+You can install the `flempar` package from the GitHub account of the Political Science Department of the University of Antwerp, <https://github.com/PolscienceAntwerp/flempar>. **Mac users** will also need to install [Xcode](https://apps.apple.com/be/app/xcode/id497799835?mt=12). If you run into any trouble, check our [troubleshooter](https://www.flempar.be/documentation/#troubleshooting). 
 
 ```r
 require(devtools) 
