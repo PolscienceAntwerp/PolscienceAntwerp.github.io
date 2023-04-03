@@ -58,7 +58,7 @@ If the issue persists after following these steps, you can manually remove the o
 R packages may depend on other packages or other pieces of software to run. Make sure that all dependencies are installed. Sometimes, it might not be entirely clear what exactly is missing. To troubleshoot this error, Google the error message to determine which dependencies are missing!
 
 
-If problems persist, you can also completely side-step dependencies and system issues using our containerized version of `flempar` (Docker). When using Docker, you can use `flempar` with two easy commands. See this blog for more information. 
+If problems persist, you can also completely side-step dependencies and system issues using our containerized version of `flempar` (Docker). When using Docker, you can use `flempar` with two easy commands. See this [blog](https://www.flempar.be/post/running-docker/) for more information.
 
 #### Read me when using `flempar` to get written questions between 2005 and 2014
 
