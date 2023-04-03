@@ -84,13 +84,6 @@ You can run the container by running the following command in your terminal.
 docker run --rm -ti -e PASSWORD=yourpassword -e ROOT=TRUE -p 8787:8787 datamarinier/flempar
 ```
 
-Note that this command includes some flags. These flags serve distinct functions and have been pre-configured for our specific purpose. 
-
-- --rm is used to automatically remove the container after we close Docker, but the container’s data is not deleted.
-- -ti tells docker to open an interactive container instance.
-- -e passes an enviroment variable to the container, it is used here to set a password and indicate that you want to run your R session as admin (i.e. root)
-- -p regulate which port is used
-
 Now your container is running, you can access it through your browser. Type localhost:8787 in your browser to gain access. The username stays the same (*rstudio*), but the password is now set to the password you specified in the command. 
 
 {{< figure src="/images/Afbeelding5.png" title="" >}}
