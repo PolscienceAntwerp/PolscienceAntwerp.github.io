@@ -13,7 +13,10 @@ Willems E., Heylen F. & Van Dooren W. *flempar: An interface to the API of the F
 #### Project
 Willems E., Heylen F. & Van Dooren W. *flempar: An interface to the API of the Flemish Parliament*. www.flempar.be. 
 
+## Licenses
 
+- MIT License
+- Contains public sector information obtained under the [model license](https://www.vlaamsparlement.be/nl/parlementair-werk/dossiers/dossiers/open-data) for free reuse Flanders v1.0
 
 ## Developers
 [Frederik Heylen](https://datamarinier.be/team.html). Author. Datamarinier.
