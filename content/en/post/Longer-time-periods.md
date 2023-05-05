@@ -70,8 +70,6 @@ data.frame(datum_start  = seq(ymd("2018-01-01"),
 ```
 For this period, the result is a data frame of 11 rows. The last row represents a concise time interval as the last included date is set to finish at a default 2022-12-31. 
 
-INSERT IMAGE HERE
-
 Note that you can easily collect data from a longer period (e.g. the past 20 years) by simply widening the interval in the data frame.
 
 #### Collecting data
