@@ -81,7 +81,7 @@ In this case, the following command will download the latest version of the `fle
 You can run the container by running the following command in your terminal. 
 
 ```
-docker run --rm -ti -e PASSWORD=yourpassword -e ROOT=TRUE -p 8787:8787 datamarinier/flempar
+docker run --rm -ti -e PASSWORD=yourpassword -p 8787:8787 datamarinier/flempar
 ```
 
 Now your container is running, you can access it through your browser. Type localhost:8787 in your browser to gain access. The username stays the same (*rstudio*), but the password is now set to the password you specified in the command. 
