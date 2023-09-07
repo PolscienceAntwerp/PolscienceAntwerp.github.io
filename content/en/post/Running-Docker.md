@@ -44,7 +44,7 @@ Run `flempar` on an any system, without having to download R or Rstudio with two
 
 ```
 docker pull datamarinier/flempar
-docker run --rm -ti -e PASSWORD=yourpassword -e ROOT=TRUE -p 8787:8787 datamarinier/flempar
+docker run --rm -ti -e PASSWORD=yourpassword -p 8787:8787 datamarinier/flempar
 ```
 ### For whom is this blog?
 
