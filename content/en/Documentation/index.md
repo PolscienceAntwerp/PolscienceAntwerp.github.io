@@ -8,10 +8,9 @@ menu:
 ---
 
 ## Citation
-#### Software package
-Willems E., Heylen F. & Van Dooren W. *flempar: An interface to the API of the Flemish Parliament*. https://github.com/PolscienceAntwerp/Flempar. 
-#### Project
-Willems E., Heylen F. & Van Dooren W. *flempar: An interface to the API of the Flemish Parliament*. www.flempar.be. 
+
+#### For citation purposes, please refer to the following source:
+Willems, E., & Heylen, F. (2023). flempar: An R-package for analyzing data from the Flemish Parliament. https://doi.org/10.31235/osf.io/7qwvt
 
 ## Licenses
 
